@@ -10,8 +10,8 @@ Idioma: Español
 
 # Organización:
 
-Felipe:\
+Felipe:
 
-Minte:\
+Minte:
 
-Franco:\
+Franco:

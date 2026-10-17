@@ -6,9 +6,17 @@
 #include <time.h>
 #include <string.h>
 
+/**
+ * @brief Estructura del personaje
+ * 
+ * Cada campo indica las caracteristicas del personaje
+ * 
+ * Se usa arreglo en el nombre pues queremos de manera estetica mantener bajo el numero de
+ * caracteres a la hora de imprimir al jugador.
+ */
 typedef struct 
 {
-    char *nombre;
+    char nombre[20];
     int puntos_de_vida;
     int ataque;
     int defensa;
