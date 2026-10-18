@@ -45,4 +45,14 @@ void estado_personaje(personaje_ *p);
  */
 void guardar_personaje(personaje_ *p);
 
+/**
+ * @brief imrpime el menu de inicio
+ */
+void imprimir_menu();
+
+/**
+ * @brief Verifica la seleccion
+ */
+void selector_menu(personaje_ *p);
+
 #endif

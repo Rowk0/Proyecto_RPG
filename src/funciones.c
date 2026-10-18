@@ -37,3 +37,43 @@ void guardar_personaje(personaje_ *p)
 
     fclose(archivo);
 }
+
+void imprimir_menu()
+{
+    printf("\n====(NOMBRE DEL JUEGO EPICO)====\n");
+    printf("\t==== Menu ====\n");
+    printf("\t1. Caminar\n");
+    printf("\t2. Ver personaje\n");
+    printf("\t3. Inventario\n");
+    printf("\t4. Historial\n");
+    printf("\t5. Salir :(\n");
+}
+
+void selector_menu(personaje_ *p)
+{
+    int opcion;
+    printf("Elige una opcion:");
+    scanf("%d", &opcion);
+
+    switch (opcion)
+    {
+    case 1:
+        printf("opcion caminando..");
+        break;
+    case 2:
+        estado_personaje(p);
+        break;
+    case 3:
+        printf("opcion ver inventariooo");
+        break;
+    case 4:
+        printf("historial de acciones");
+        break;
+    case 5:
+        printf("Cerrando el juego");
+        exit(0);
+    default:
+        printf("Eliga una opcion valida!\n");
+        break;
+    }
+}

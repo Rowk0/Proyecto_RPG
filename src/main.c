@@ -7,7 +7,8 @@ int main()
 
     /*Si existe un archivo de guardado saltar esta parte*/
     creacion_personaje(&personaje);
-    estado_personaje(&personaje);
+    imprimir_menu();
+    selector_menu(&personaje);
     guardar_personaje(&personaje);
 
     return 0;
