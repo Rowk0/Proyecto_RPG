@@ -22,4 +22,27 @@ typedef struct
     int defensa;
 } personaje_;
 
+/**
+ * @brief Funcion crear personaje.
+ * 
+ * Se le permite al usuario crear el nombre de su personaje.
+ * 
+ * @param p personaje a crear.
+ */
+void creacion_personaje(personaje_ *p);
+
+/**
+ * @brief Imprime los campos del personaje.
+ * 
+ * @param p Personaje en juego
+ */
+void estado_personaje(personaje_ *p);
+
+/**
+ * @brief Estoy loco
+ * 
+ * @param p 
+ */
+void guardar_personaje(personaje_ *p);
+
 #endif
