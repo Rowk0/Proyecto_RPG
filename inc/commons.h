@@ -55,4 +55,12 @@ void imprimir_menu();
  */
 void selector_menu(personaje_ *p);
 
+/**
+ * @brief Imprime archivos de guardado
+ * 
+ * El usuario elige que archivo abrir y seguir jugando
+ * 
+ */
+void imprimir_guardados(personaje_ *p);
+
 #endif

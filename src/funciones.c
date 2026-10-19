@@ -38,6 +38,15 @@ void guardar_personaje(personaje_ *p)
     fclose(archivo);
 }
 
+void imprimir_guardados(personaje_ *p)
+{
+    printf("Bienvenido :D\n");
+    printf("Elija que archivo de guardado desea abrir:\n");
+    printf("Save 1\n");
+    printf("Save 2\n");
+    printf("Save 3\n");
+}
+
 void imprimir_menu()
 {
     printf("\n====(NOMBRE DEL JUEGO EPICO)====\n");
