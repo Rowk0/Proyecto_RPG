@@ -1,8 +1,9 @@
 #include "commons.h"
+#include <unistd.h>
 
 void creacion_personaje(personaje_ *p)
 {
-    printf("Introduzca el nombre de su personaje: ");
+    printf("Introduzca el nombre de su personaje:");
 
     //Posible caso limite
     if (fgets(p->nombre, sizeof(p->nombre), stdin) == NULL)
@@ -38,7 +39,7 @@ void guardar_personaje(personaje_ *p)
     fclose(archivo);
 }
 
-void imprimir_guardados(personaje_ *p)
+void imprimir_guardados(void)/*personaje_ *p*/
 {
     printf("Bienvenido :D\n");
     printf("Elija que archivo de guardado desea abrir:\n");
@@ -62,7 +63,11 @@ void selector_menu(personaje_ *p)
 {
     int opcion;
     printf("Elige una opcion:");
-    scanf("%d", &opcion);
+    if (scanf("%d", &opcion) != 1)
+    {
+        printf("Entrada invalida\n");
+        return;
+    }
 
     switch (opcion)
     {
@@ -71,18 +76,32 @@ void selector_menu(personaje_ *p)
         break;
     case 2:
         estado_personaje(p);
+        volver_menu();
         break;
     case 3:
         printf("opcion ver inventariooo");
+        volver_menu();
         break;
     case 4:
         printf("historial de acciones");
+        volver_menu();
         break;
     case 5:
         printf("Cerrando el juego");
         exit(0);
     default:
         printf("Eliga una opcion valida!\n");
-        break;
+        sleep(1);
+        selector_menu(p);
+    }
+}
+
+void volver_menu(void)
+{
+    int opcion = 1;
+    while (opcion != 0)
+    {
+        printf("\nIngresa 0 para abrir el menu: ");
+        scanf("%d",&opcion);
     }
 }

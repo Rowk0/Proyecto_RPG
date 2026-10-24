@@ -26,9 +26,9 @@ clean:
 	rm -rf build/*
 
 folders:
-	mkdir -p src obj inc build
+	mkdir -p src obj inc build save
 
-run:
+run: all
 	@./build/$(EXEC)
 
 send:

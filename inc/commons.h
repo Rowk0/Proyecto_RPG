@@ -46,7 +46,7 @@ void estado_personaje(personaje_ *p);
 void guardar_personaje(personaje_ *p);
 
 /**
- * @brief imrpime el menu de inicio
+ * @brief imprime el menu de inicio
  */
 void imprimir_menu();
 
@@ -61,6 +61,13 @@ void selector_menu(personaje_ *p);
  * El usuario elige que archivo abrir y seguir jugando
  * 
  */
-void imprimir_guardados(personaje_ *p);
+void imprimir_guardados(void)/*personaje_ *p*/;
 
+/**
+ * @brief funcion ingresar 0 para salir
+ * 
+ * El usuario ingresa 0 para volver al menu
+ * 
+ */
+void volver_menu(void);
 #endif
