@@ -70,4 +70,15 @@ void imprimir_guardados(void)/*personaje_ *p*/;
  * 
  */
 void volver_menu(void);
+
+/**
+ * @brief funcion para elegir 
+ * 
+ * Esta funcion se utiliza para no tener que repetir el mismo codigo para elegir una opcion
+ * 
+ */
+int elegir_opcion(void);
+
+
+//void camino(void);
 #endif

@@ -52,7 +52,7 @@ void imprimir_menu()
 {
     printf("\n====(NOMBRE DEL JUEGO EPICO)====\n");
     printf("\t==== Menu ====\n");
-    printf("\t1. Caminar\n");
+    printf("\t1. Elegir camino\n");
     printf("\t2. Ver personaje\n");
     printf("\t3. Inventario\n");
     printf("\t4. Historial\n");
@@ -61,18 +61,11 @@ void imprimir_menu()
 
 void selector_menu(personaje_ *p)
 {
-    int opcion;
-    printf("Elige una opcion:");
-    if (scanf("%d", &opcion) != 1)
-    {
-        printf("Entrada invalida\n");
-        return;
-    }
-
+    int opcion = elegir_opcion();
     switch (opcion)
     {
     case 1:
-        printf("opcion caminando..");
+        //camino();
         break;
     case 2:
         estado_personaje(p);
@@ -104,4 +97,12 @@ void volver_menu(void)
         printf("\nIngresa 0 para abrir el menu: ");
         scanf("%d",&opcion);
     }
+}
+
+int elegir_opcion(void)
+{
+    int opcion;
+    printf("\nElige una opcion: ");
+    scanf("%d", &opcion);
+    return opcion;
 }
