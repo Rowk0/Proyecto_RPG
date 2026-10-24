@@ -1,4 +1,5 @@
 #include "commons.h"
+#include "personaje.h"
 #include <time.h>
 int main()
 {
