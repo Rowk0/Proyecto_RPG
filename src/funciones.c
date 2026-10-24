@@ -3,8 +3,9 @@
 
 void creacion_personaje(personaje_ *p)
 {
-
     printf("Introduzca el nombre de su personaje:");
+
+    while (getchar() != '\n');
 
     //Posible caso limite
     if (fgets(p->nombre, sizeof(p->nombre), stdin) == NULL)
@@ -15,6 +16,68 @@ void creacion_personaje(personaje_ *p)
 
     // Elimina el salto de línea sobrante
     p->nombre[strcspn(p->nombre, "\n")] = '\0';
+}
+
+void cargar_personaje(personaje_ *p, int *indice_archivo_guardado)
+{
+    char ruta_archivo[30];
+    char lineas[100];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
+
+    FILE *archivo = fopen(ruta_archivo, "r"); //Por ahora está en save_1 más adelante lo hago dinamico
+
+    if (archivo == NULL)
+    {
+        printf("Error al abrir el archivo");
+        return;
+    }
+
+    if (fgets(lineas, sizeof(lineas), archivo) != NULL)
+    {
+        strcpy(p->nombre, lineas);
+    }
+
+    if (fgets(lineas, sizeof(lineas), archivo) != NULL)
+    {
+        p->puntos_de_vida = atoi(lineas);
+    }
+
+    if (fgets(lineas, sizeof(lineas), archivo) != NULL)
+    {
+        p->ataque = atoi(lineas);
+    }
+
+    if (fgets(lineas, sizeof(lineas), archivo) != NULL)
+    {
+        p->defensa = atoi(lineas);
+    }
+
+    fclose(archivo);
+}
+
+int archivo_guardado_vacio(int *indice_archivo_guardado)
+{
+    char ruta_archivo[30];
+    char lineas[100];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
+
+    FILE *archivo = fopen(ruta_archivo, "r"); //Por ahora está en save_1 más adelante lo hago dinamico
+
+    if (archivo == NULL)
+    {
+        printf("Error al abrir el archivo");
+        return -1;
+    }
+
+    if (fgets(lineas, sizeof(lineas), archivo) == NULL)
+    {
+        printf("El archivo se encuentra vacio\n");
+        return 1;
+    }
+
+    return 0;
 }
 
 void inicializacion_rpg(int *indice_archivo_guardado)
@@ -40,9 +103,13 @@ void estado_personaje(personaje_ *p)
     printf("[%-7s]: %d\n", "Defensa", p->defensa);
 }
 
-void guardar_personaje(personaje_ *p)
+void guardar_personaje(personaje_ *p, int *indice_archivo_guardado)
 {
-    FILE *archivo = fopen("save/save_1.txt", "w"); //Por ahora está en save_1 más adelante lo hago dinamico
+    char ruta_archivo[30];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
+
+    FILE *archivo = fopen(ruta_archivo, "w"); //Por ahora está en save_1 más adelante lo hago dinamico
 
     if (archivo == NULL)
     {
@@ -117,7 +184,7 @@ void volver_menu(void)
 {
     int opcion = 1;
     while (opcion != 0)
-    {
+    { 
         printf("\nIngresa 0 para abrir el menu: ");
         while (scanf("%d",&opcion) != 1);
     }
