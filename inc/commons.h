@@ -53,7 +53,7 @@ void imprimir_menu();
 /**
  * @brief Verifica la seleccion
  */
-void selector_menu(personaje_ *p);
+void selector_menu(personaje_ *p, int *loop_juego);
 
 /**
  * @brief Imprime archivos de guardado
