@@ -10,7 +10,7 @@ int main()
 
     while(1)
     {
-    imprimir_menu();
+    
     selector_menu(&personaje);
     guardar_personaje(&personaje);
 

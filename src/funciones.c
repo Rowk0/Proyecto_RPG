@@ -61,23 +61,24 @@ void imprimir_menu()
 
 void selector_menu(personaje_ *p)
 {
+    imprimir_menu();
     int opcion = elegir_opcion();
     switch (opcion)
     {
     case 1:
-        //camino();
+        camino();
         break;
     case 2:
         estado_personaje(p);
-        volver_menu();
+        elegir_opcion();
         break;
     case 3:
         printf("opcion ver inventariooo");
-        volver_menu();
+        elegir_opcion();
         break;
     case 4:
         printf("historial de acciones");
-        volver_menu();
+        elegir_opcion();
         break;
     case 5:
         printf("Cerrando el juego");
@@ -89,20 +90,52 @@ void selector_menu(personaje_ *p)
     }
 }
 
-void volver_menu(void)
-{
-    int opcion = 1;
-    while (opcion != 0)
-    {
-        printf("\nIngresa 0 para abrir el menu: ");
-        scanf("%d",&opcion);
-    }
-}
 
 int elegir_opcion(void)
 {
     int opcion;
     printf("\nElige una opcion: ");
     scanf("%d", &opcion);
+    //opcion predeterminada 0 para abrir el menu
     return opcion;
+}
+
+void camino(void)
+{
+    int elegir_ruta;
+    printf("0. Para abrir el menu\n");
+    printf("1. Para ir a Bosque de Almas\n");
+    printf("2. Para ir a Sistema de Cuevas\n");
+    printf("3. Para ir a Castillo en Ruinas\n");
+    elegir_ruta = elegir_opcion();
+    switch (elegir_ruta)
+    {
+    case 1:
+        caminando();
+        camino_1();
+        break;
+    
+    default:
+        break;
+    }
+    
+}
+
+void caminando(void)
+{
+    printf("caminando");
+    fflush(stdout);
+
+    for (int i = 0; i < 3; i++)
+    {
+        sleep(1);
+        printf(".");
+        fflush(stdout);
+    }
+    printf("\n");
+}
+
+void camino_1(void)
+{
+    printf("PRUEBA");
 }

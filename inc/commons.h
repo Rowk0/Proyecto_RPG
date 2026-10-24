@@ -63,13 +63,6 @@ void selector_menu(personaje_ *p);
  */
 void imprimir_guardados(void)/*personaje_ *p*/;
 
-/**
- * @brief funcion ingresar 0 para salir
- * 
- * El usuario ingresa 0 para volver al menu
- * 
- */
-void volver_menu(void);
 
 /**
  * @brief funcion para elegir 
@@ -79,6 +72,22 @@ void volver_menu(void);
  */
 int elegir_opcion(void);
 
+/**
+ * @brief funcion de animacion para caminar
+ * 
+ * funcion hecha con ayuda de IA
+ */
+void caminando (void);
 
-//void camino(void);
+/**
+ * @brief elegir que camino tomar
+ * 
+ */
+void camino(void);
+
+/**
+ * @brief camino 1
+ * 
+ */
+void camino_1(void);
 #endif
