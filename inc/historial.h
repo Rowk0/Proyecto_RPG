@@ -6,24 +6,26 @@
 #include <time.h>
 #include <string.h>
 
+typedef struct nodo* puntero_a_nodo;
+typedef puntero_a_nodo historial;
+
 /**
  * @brief El historial tomara la estructura de una pila
  * 
  */
-typedef struct 
+struct nodo
 {
-    char *accion; //Acciones
-    int k; // Tamaño
-    int p; // Cantidad
-} pila_;
+    char *accion;
+    historial siguiente;
+};
 
 /**
- * @brief Crea la pila vacia, de caso contrario vacia totalmente al pila de historial
+ * @brief Crea el centinela de la pila del historial
  * 
- * @param k Tamaño de la pila
- * @return pila_ Devuelve la pila creada
+ * @param H Historial a crear
+ * @return historial Devuelve la pila actualizada
  */
-pila_ crear_vacio(int k);
+historial crear_pila();
 
 /**
  * @brief Pone un elemento en la pila
@@ -32,20 +34,20 @@ pila_ crear_vacio(int k);
  * @param accion Cadena de caracteres a poner en el historial
  * @return pila_ Devuelve la pila actualizada
  */
-pila_ push(pila_ H, char *accion);
+historial push(historial H, char *accion_texto);
 
 /**
  * @brief Elimina el ultimo elemento puesto en la pila
  * 
  * @param H Pila al que eliminar el elemento
  */
-void pop(pila_ H);
+historial pop(historial H);
 
 /**
- * @brief Imprime el contenido de la pila
+ * @brief Imprime el historial
  * 
- * @param H Pila al que imprimir
+ * @param H Historial a imprimir
  */
-void imprimir_pila(pila_ H);
+void imprimir_historial(historial H);
 
 #endif

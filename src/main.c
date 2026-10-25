@@ -1,5 +1,6 @@
 #include "commons.h"
 #include "personaje.h"
+#include "historial.h"
 #include <time.h>
 int main()
 {
