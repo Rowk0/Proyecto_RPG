@@ -34,6 +34,8 @@ void cargar_personaje(personaje_ *p, int *indice_archivo_guardado)
 
     if (fgets(lineas, sizeof(lineas), archivo) != NULL)
     {
+        lineas[strcspn(lineas, "\n")] = '\0';
+
         strcpy(p->nombre, lineas);
     }
 
@@ -69,7 +71,7 @@ void guardar_personaje(personaje_ *p, int *indice_archivo_guardado)
 
     snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
 
-    FILE *archivo = fopen(ruta_archivo, "w"); //Por ahora está en save_1 más adelante lo hago dinamico
+    FILE *archivo = fopen(ruta_archivo, "w"); 
 
     if (archivo == NULL)
     {

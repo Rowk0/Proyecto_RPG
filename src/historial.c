@@ -5,7 +5,7 @@ historial crear_pila()
     historial H;
 
     H = malloc(sizeof(struct nodo));
-    
+
     H->siguiente = NULL;
 
     return H;
@@ -62,7 +62,7 @@ void imprimir_historial(historial H)
 
     while (actual != NULL)
     {
-        printf("%s", H->accion);
+        printf("%s", actual->accion);
         actual = actual->siguiente;
     }
 }

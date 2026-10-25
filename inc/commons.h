@@ -68,11 +68,11 @@ void caminando (void);
  * @brief elegir que camino tomar
  * 
  */
-void camino(void);
+void camino(personaje_ *p);
 
 /**
  * @brief jugador elige camino bosque
  * 
  */
-void zona_bosque(void);
+void zona_bosque(personaje_ *p);
 #endif

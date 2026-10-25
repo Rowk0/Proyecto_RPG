@@ -67,7 +67,7 @@ void selector_menu(personaje_ *p, int *loop_juego)
     switch (opcion)
     {
     case 1:
-        camino();
+        camino(p);
         break;
     case 2:
         estado_personaje(p);
@@ -78,7 +78,7 @@ void selector_menu(personaje_ *p, int *loop_juego)
         volver_menu();
         break;
     case 4:
-        printf("historial de acciones");
+        imprimir_historial(p->historial);
         volver_menu();
         break;
     case 5:
@@ -110,7 +110,7 @@ int elegir_opcion(void)
     return opcion;
 }
 
-void camino(void)
+void camino(personaje_ *p)
 {
     int elegir_ruta;
     printf("0. Para abrir el menu\n");
@@ -122,7 +122,7 @@ void camino(void)
     {
     case 1:
         caminando();
-        zona_bosque();
+        zona_bosque(p);
         break;
     case 2:
         caminando();
@@ -153,7 +153,7 @@ void caminando(void)
     printf("\n");
 }
 
-void zona_bosque(void)
+void zona_bosque(personaje_ *p)
 {
     int explorando = 1;
 
@@ -169,6 +169,7 @@ void zona_bosque(void)
             if(evento == 0)
             {
                 printf("Sigues caminando. No encuentras nada\n");
+                p->historial = push(p->historial, "Sigues caminando. No encuentras nada\n");
             }
 
             else if(evento == 1)

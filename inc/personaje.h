@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include "historial.h"
 
 /**
  * @brief Estructura del personaje
@@ -20,6 +21,7 @@ typedef struct
     int puntos_de_vida;
     int ataque;
     int defensa;
+    historial historial;
 } personaje_;
 
 /**
