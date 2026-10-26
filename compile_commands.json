@@ -1,0 +1,19 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-O3",
+      "-c",
+      "-I./inc/",
+      "-o",
+      "obj/objeto.o",
+      "src/objeto.c"
+    ],
+    "directory": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG",
+    "file": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG/src/objeto.c",
+    "output": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG/obj/objeto.o"
+  }
+]
