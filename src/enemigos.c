@@ -20,63 +20,100 @@ void enemigos_x_zona(personaje_ *p, int elegir_ruta)
     }
 }
 
-
-cola_enemigos crear_cola(void)
+void vaciar_cola(cola_enemigos Q)
 {
-    cola_enemigos C;
-    C = malloc(sizeof(struct nodo_enemigo));
-    if(C == NULL)
-    {
-        printf("Error, sin espacio");
-        return C;
-    }
-
-    C->siguiente = NULL;
-    return C;
+    Q->tamanho = 0;
+    Q->front = 1;
+    Q->rear = 0;
 }
 
-cola_enemigos enqueue(cola_enemigos C, enemigo_ e)
+int cola_vacia(cola_enemigos Q)
 {
-    cola_enemigos aux;
-    aux = malloc(sizeof(struct nodo_enemigo));
-    if(aux == NULL)
-    {
-        printf("Error, sin espacio");
-        return C;
-    }
-    aux->enemigo = e;
-    aux->siguiente = NULL;
-    puntero_enemigo p = C;
-    while(p->siguiente != NULL)
-    {
-        p = p->siguiente;
-    }
-    p->siguiente = aux;
-    return C;
+    return Q->tamanho == 0;
 }
 
-cola_enemigos dequeue(cola_enemigos C)
+int cola_llena(cola_enemigos Q)
 {
-    if(C == NULL || C->siguiente == NULL)
-    {
-        printf("La cola de enemigos ya esta vacia\n");
-        return C;
-    }
-    puntero_enemigo primero = C->siguiente;
-    C->siguiente = C->siguiente->siguiente;
-
-    free(primero);
-    return C;
-    
+    return Q->tamanho == Q->capacidad;
 }
 
-void imprimir_enemigos(cola_enemigos C)
+cola_enemigos crear_cola(int max_elementos)
 {
-    puntero_enemigo actual = C->siguiente;
-    while(actual != NULL)
+    cola_enemigos Q;
+    if(max_elementos < MIN_TAMANHO_COLA)
     {
-    printf("  %d. %s (%d PV)\n", actual->enemigo.id, actual->enemigo.nombre, actual->enemigo.puntos_de_vida);
-    actual = actual->siguiente;
+        printf("Error. El tamanho de la cola es muy pequenho\n");
+        return NULL;
+    }
+
+    Q = malloc(sizeof(struct registro_cola));
+    if(Q == NULL)
+    {
+        printf("Error. Sin espacio en la memoria \n");
+        return NULL;
+    }
+
+    Q->arreglo = malloc(sizeof(enemigo_) * max_elementos);
+    if(Q->arreglo == NULL)
+    {
+        printf("Error. Sin espacio en la memoria\n");
+        free(Q);
+        return NULL;
+    }
+
+    Q->capacidad = max_elementos;
+    vaciar_cola(Q);
+    return Q;
+}
+
+int sucesor(int valor, cola_enemigos Q)
+{
+    if(++valor == Q->capacidad)
+    {
+        valor = 0;
+    }
+    return valor;
+}
+
+cola_enemigos enqueue(enemigo_ X, cola_enemigos Q)
+{
+    if(cola_llena(Q))
+    {
+        printf("Error. Cola llena\n");
+    }
+    else
+    {
+        Q->tamanho++;
+        Q->rear = sucesor(Q->rear, Q);
+        Q->arreglo[Q->rear] = X;
+    }
+    return Q;
+}
+
+cola_enemigos dequeue(cola_enemigos Q)
+{
+    if(cola_vacia(Q))
+    {
+        printf("Error. Cola vacia\n");
+    }
+    else
+    {
+        Q->tamanho--;
+        Q->front = sucesor(Q->front, Q);
+    }
+    return Q;
+}
+
+void imprimir_enemigos(cola_enemigos Q)
+{
+    int indice = Q->front;
+    for (int i = 0; i < Q->tamanho; i++)
+    {
+        printf("  %d. %s (%d PV)\n",
+               Q->arreglo[indice].id,
+               Q->arreglo[indice].nombre,
+               Q->arreglo[indice].puntos_de_vida);
+        indice = sucesor(indice, Q);
     }
 }
 

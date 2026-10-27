@@ -1,5 +1,6 @@
 #ifndef ENEMIGOS
 #define ENEMIGOS
+#define MIN_TAMANHO_COLA 3
 
 #include "personaje.h"
 
@@ -20,19 +21,25 @@ typedef struct
 typedef struct nodo_enemigo* puntero_enemigo;
 typedef puntero_enemigo cola_enemigos;
 
-struct nodo_enemigo
+struct registro_cola
 {
-    enemigo_ enemigo;
-    puntero_enemigo siguiente;
+    int capacidad;
+    int front;
+    int rear;
+    int tamanho;
+    enemigo_ *arreglo;
 };
 
-cola_enemigos crear_cola(void);
+typedef struct registro_cola* cola_enemigos;
 
-cola_enemigos enqueue(cola_enemigos C, enemigo_ e);
-
-cola_enemigos dequeue(cola_enemigos C);
-
-void imprimir_enemigos(cola_enemigos C);
+cola_enemigos crear_cola(int max_elementos);
+void vaciar_cola(cola_enemigos Q);
+int cola_vacia(cola_enemigos Q);
+int cola_llena(cola_enemigos Q);
+int sucesor(int valor, cola_enemigos Q);
+cola_enemigos enqueue(enemigo_ X, cola_enemigos Q);
+cola_enemigos dequeue(cola_enemigos Q);
+void imprimir_enemigos(cola_enemigos Q);
 
 
 
