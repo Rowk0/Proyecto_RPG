@@ -18,9 +18,6 @@ typedef struct
     int ataque;
 } enemigo_;
 
-typedef struct nodo_enemigo* puntero_enemigo;
-typedef puntero_enemigo cola_enemigos;
-
 struct registro_cola
 {
     int capacidad;
@@ -48,17 +45,28 @@ void imprimir_enemigos(cola_enemigos Q);
  * se encuentre el jugador
  * 
  */
-void enemigos_x_zona(personaje_ *p, int elegir_ruta);
+void enemigos_x_zona(int elegir_ruta);
 
 
+/*No estoy completamente seguro si se puede modularizar aun mas
+estas 3 funciones*/
 /**
  * @brief aparicion de enemigos exclusivos del bosque
  * 
  */
-void enemigos_bosque();
+void enemigos_bosque(cola_enemigos Q);
+
+/**
+ * @brief aparicion de enemigos exclusivos de las cuevas
+ * 
+ */
+void enemigos_cuevas(cola_enemigos Q);
+
+/**
+ * @brief aparicion de enemigos exclusivos del castillo
+ * 
+ */
+void enemigos_castillo(cola_enemigos Q);
 
 
-void enemigos_cuevas();
-
-void enemigos_castillo();
 #endif

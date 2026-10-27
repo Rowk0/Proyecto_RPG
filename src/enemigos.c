@@ -1,19 +1,24 @@
 #include "enemigos.h"
 #include "personaje.h"
+#include <unistd.h>
 
-void enemigos_x_zona(personaje_ *p, int elegir_ruta)
+void enemigos_x_zona(int elegir_ruta)
 {
+    cola_enemigos Q = crear_cola(3);
     switch (elegir_ruta)
     {
     case 1:
-        enemigos_bosque();
+        enemigos_bosque(Q);
+        imprimir_enemigos(Q);
         break;
     
     case 2:
-        enemigos_cuevas();
+        enemigos_cuevas(Q);
+        imprimir_enemigos(Q);
         break;  
     case 3:
-        enemigos_castillo();
+        enemigos_castillo(Q);
+        imprimir_enemigos(Q);
         break;
     default:
         break;
@@ -115,20 +120,103 @@ void imprimir_enemigos(cola_enemigos Q)
                Q->arreglo[indice].puntos_de_vida);
         indice = sucesor(indice, Q);
     }
+    printf("COMBATE\n");
+    sleep(5);
 }
 
 
-void enemigos_bosque()
+void enemigos_bosque(cola_enemigos Q)
 {
-    
+    int cantidad = rand () % 3 + 1;
+    for(int i = 1; i <= cantidad; i++)
+    {
+        enemigo_ nuevo;
+        nuevo.id = i;
+
+        int tipo_enemigo = rand() % 3;
+        if(tipo_enemigo == 0)
+        {
+            strcpy(nuevo.nombre, "Duende");
+            nuevo.puntos_de_vida = 10;
+            nuevo.ataque = 2;
+        }
+        if(tipo_enemigo == 1)
+        {
+            strcpy(nuevo.nombre, "Lobo");
+            nuevo.puntos_de_vida = 15;
+            nuevo.ataque = 5;
+        }
+        if(tipo_enemigo == 2)
+        {
+            strcpy(nuevo.nombre, "Ogro");
+            nuevo.puntos_de_vida = 20;
+            nuevo.ataque = 7;
+        }
+
+        enqueue(nuevo, Q);
+    }
 }
 
-void enemigos_cuevas()
+void enemigos_cuevas(cola_enemigos Q)
 {
+    int cantidad = rand () % 3 + 1;
+    for(int i = 1; i <= cantidad; i++)
+    {
+        enemigo_ nuevo;
+        nuevo.id = i;
 
+        int tipo_enemigo = rand() % 3;
+        if(tipo_enemigo == 0)
+        {
+            strcpy(nuevo.nombre, "Rata Fea");
+            nuevo.puntos_de_vida = 20;
+            nuevo.ataque = 7;
+        }
+        if(tipo_enemigo == 1)
+        {
+            strcpy(nuevo.nombre, "Esqueleto");
+            nuevo.puntos_de_vida = 15;
+            nuevo.ataque = 5;
+        }
+        if(tipo_enemigo == 2)
+        {
+            strcpy(nuevo.nombre, "Aranha Gigante");
+            nuevo.puntos_de_vida = 30;
+            nuevo.ataque = 9;
+        }
+
+        enqueue(nuevo, Q);
+    }
 }
 
-void enemigos_castillo()
+void enemigos_castillo(cola_enemigos Q)
 {
+    int cantidad = rand () % 3 + 1;
+    for(int i = 1; i <= cantidad; i++)
+    {
+        enemigo_ nuevo;
+        nuevo.id = i;
 
+        int tipo_enemigo = rand() % 3;
+        if(tipo_enemigo == 0)
+        {
+            strcpy(nuevo.nombre, "Caballero Oscuro");
+            nuevo.puntos_de_vida = 35;
+            nuevo.ataque = 10;
+        }
+        if(tipo_enemigo == 1)
+        {
+            strcpy(nuevo.nombre, "Fantasma del Esclavo");
+            nuevo.puntos_de_vida = 40;
+            nuevo.ataque = 12;
+        }
+        if(tipo_enemigo == 2)
+        {
+            strcpy(nuevo.nombre, "Mago Malo");
+            nuevo.puntos_de_vida = 45;
+            nuevo.ataque = 15;
+        }
+
+        enqueue(nuevo, Q);
+    }
 }
