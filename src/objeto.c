@@ -1,26 +1,48 @@
+/**
+ * @file objeto.c
+ * @brief Funciones relacionadas con objetos
+*/
 
-/*
-inventario tomar_objeto(inventario i, objeto o)
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include "objetos.h"
+
+objeto_ crear_objeto(int id, int clase, char* nombre, char* descripcion)
 {
-	if(i == NULL)
+	objeto_ o = {id, clase, NULL, NULL};
+	
+	o.nombre = malloc(strlen(nombre) + 1);
+	if(o.nombre == NULL)
 	{
-		printf("Error: Inventario nulo\n");
-		return i;
+		printf("Out of memory!\n");
+		return o;
 	}
-	inventario aux = malloc(sizeof(struct Node));
-    if(aux == NULL)
-    {
-        printf("Sin memoria!\n");
-        return aux;
-    }
-    aux->p = P;
-    aux->next = I;
-    aux->prev = I->prev;
-    I->prev = aux;
-    aux->prev->next = aux;
-    I->p.stock++;
+	strcpy(o.nombre, nombre);
 
-    return I;
+	o.descripcion = malloc(strlen(descripcion) + 1);
+	if(o.descripcion == NULL)
+	{
+		printf("Out of memory!\n");
+		free(o.nombre);
+		o.nombre = NULL;
+		return o;
+	}
+	strcpy(o.descripcion, descripcion);
+
+	return o;
 }
 
-*/
+void analizar_objeto(objeto_ o)
+{
+	printf("  - id (BORRAR ESTO AL TERMINAR!!): %d\n", o.id);
+	printf("  - Nombre: %s\n", o.nombre);
+	printf("  - Descripcion: %s\n", o.descripcion);
+}
+
+void liberar_objeto(objeto_ o)
+{
+	free(o.nombre);
+	free(o.descripcion);
+}

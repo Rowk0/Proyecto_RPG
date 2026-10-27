@@ -2,21 +2,20 @@
 #define INVENTARIO
 
 #include "objetos.h"
-#include <stdbool.h>
 
-typedef struct nodo* punt_a_nodo;
-typedef punt_a_nodo inventario;
-typedef punt_a_nodo posicion;
+typedef struct nodo_objeto* puntero_a_nodo_objeto;
+typedef puntero_a_nodo_objeto inventario;
+typedef puntero_a_nodo_objeto posicion;
 
 /**
  * @brief Estructura del inventario
  * 
  * Cada campo indica las caracteristicas de un nodo del inventario.
  */
-struct nodo
+struct nodo_objeto
 {
     objeto_ objeto;
-    punt_a_nodo siguiente;
+    puntero_a_nodo_objeto siguiente;
 };
 
 /**
@@ -24,7 +23,7 @@ struct nodo
  * 
  * @return El inventario si se creo correctamente, NULL en caso contrario.
  */
-inventario crear_inventario();
+inventario crear_inventario_vacio(inventario i);
 
 /**
  * @brief Inserta el objeto al inventario dado al final de la lista.
@@ -53,13 +52,53 @@ inventario tomar_objeto(inventario i, objeto_ o);
  *
  * @return El inventario en todos los casos.
  */
-void usar_objeto(inventario i, objeto_ o);
+inventario usar_objeto(inventario i, int id);
+
+/**
+ * @brief Busca un objeto por id en el inventario dado.
+ * 
+ * @param i Inventario a buscar el objeto.
+ * @param id id para buscar el objeto.
+ *
+ * @return La variable posicion del objeto si es encontrado, NULL en caso contrario.
+ */
+posicion encontrar_objeto_por_id(inventario i, int id);
+
+/**
+ * @brief Busca el objeto anterior al objeto indicado por id en el inventario dado.
+ * 
+ * @param i Inventario a buscar el objeto.
+ * @param id id para buscar el objeto anterior.
+ *
+ * @return La variable posicion del objeto anterior si es encontrado, NULL en caso contrario.
+ */
+posicion encontrar_objeto_anterior_por_id(inventario i, int id);
+
+/**
+ * @brief Busca un objeto por nombre en el inventario dado.
+ * 
+ * @param i Inventario a buscar el objeto.
+ * @param nombre Nombre para buscar un objeto.
+ *
+ * @return La variable posicion del objeto si es encontrado, NULL en caso contrario.
+ */
+posicion encontrar_objeto_por_nombre(inventario i, char* nombre);
+
+/**
+ * @brief Busca el objeto anterior al objeto indicado por nombre en el inventario dado.
+ * 
+ * @param i Inventario a buscar el objeto.
+ * @param nombre Nombre para buscar el objeto anterior.
+ *
+ * @return La variable posicion del objeto si es encontrado, NULL en caso contrario.
+ */
+posicion encontrar_objeto_anterior_por_nombre(inventario i, char* nombre);
 
 /**
  * @brief Comprueba si el inventario está vacio 
  * 
  * @param inventario Indice del archivo a guardar
- * @return 1 si esta vacio, 0 si no esta vacio, -1 si no existe el inventario dado.
+ * @return 1 si esta vacio, 0 si no esta vacio o si es nulo.
  */
 bool inventario_vacio(inventario i);
 
@@ -69,8 +108,20 @@ bool inventario_vacio(inventario i);
 void imprimir_objetos(inventario i);
 
 /**
- * @brief Elimina el inventario dado.
+ * @brief Elimina el objeto indicado del inventario.
+ *
+ * @param i Inventario en donde se elimina un objeto.
+ * @param o Objeto a eliminar.
  */
-void eliminar_inventario(inventario i);
+void eliminar_objeto_por_id(inventario i, int id);
+/**
+ * @brief Elimina el inventario dado.
+ *
+ * Corre un bucle que libera la memoria asignada del ultimo nodo hasta alcanzar la cabecera,
+ * acto seguido, libera su memoria.
+ *
+ * @param i Inventario a eliminar.
+ */
+inventario eliminar_inventario(inventario i);
 
 #endif
