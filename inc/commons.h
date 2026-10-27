@@ -71,8 +71,10 @@ void caminando (void);
 void camino(personaje_ *p);
 
 /**
- * @brief jugador elige camino bosque
+ * @brief funcion que sirve para cualquier zona que el jugador explore
+ * dependiendo de que zona eligio, los objetos y enemigos se restrigen exclusivamente
+ * a sus respectivas zonas
  * 
  */
-void zona_bosque(personaje_ *p);
+void explorar_zona(personaje_ *p, int elegir_ruta);
 #endif

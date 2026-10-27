@@ -1,5 +1,6 @@
 #include "commons.h"
 #include "personaje.h"
+#include "enemigos.h"
 #include <unistd.h>
 
 int archivo_guardado_vacio(int *indice_archivo_guardado)
@@ -121,8 +122,8 @@ void camino(personaje_ *p)
     switch (elegir_ruta)
     {
     case 1:
-        caminando();
-        zona_bosque(p);
+        printf("Entrando al Bosque de Almas\n");
+        explorar_zona(p, elegir_ruta);
         break;
     case 2:
         caminando();
@@ -153,19 +154,19 @@ void caminando(void)
     printf("\n");
 }
 
-void zona_bosque(personaje_ *p)
+void explorar_zona(personaje_ *p, int elegir_ruta)
 {
     int explorando = 1;
 
-    printf("Entrando al Bosque de Almas\n");
     while (explorando == 1)
     {
+
         int evento = 0;
         while (evento == 0) // 1: objeto ; 2:enemigos
         {
             caminando();
             evento = rand() % 3;
-            
+
             if(evento == 0)
             {
                 printf("Sigues caminando. No encuentras nada\n");
@@ -180,16 +181,10 @@ void zona_bosque(personaje_ *p)
             else if(evento == 2)
             {
                 printf("encontraste a unos enemigos!\n");
+                enemigos_x_zona(p, elegir_ruta);
             }
         }
-        printf("Quieres seguir explorando el Bosque de Almas?\n");
 
-        printf("0. Volver al menu\n");
-        printf("1. Seguir explorando\n");
-        if (elegir_opcion() == 0)
-        {
-            explorando = 0;
-        }
     }
     
 }

@@ -1,4 +1,5 @@
 
+/*
 inventario tomar_objeto(inventario i, objeto o)
 {
 	if(i == NULL)
@@ -21,3 +22,5 @@ inventario tomar_objeto(inventario i, objeto o)
 
     return I;
 }
+
+*/

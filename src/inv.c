@@ -1,7 +1,9 @@
+
 /**
  * @file product.c
  * @brief Funciones relacionadas con inventarios de objetos
 */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,3 +40,5 @@ inventario tomar_objeto(inventario i, objeto_ o)
 
     return i;
 }
+
+

@@ -2,6 +2,7 @@
 #define INVENTARIO
 
 #include "objetos.h"
+#include <stdbool.h>
 
 typedef struct nodo* punt_a_nodo;
 typedef punt_a_nodo inventario;
@@ -15,7 +16,7 @@ typedef punt_a_nodo posicion;
 struct nodo
 {
     objeto_ objeto;
-    punt_a_nodo sig;
+    punt_a_nodo siguiente;
 };
 
 /**
