@@ -26,6 +26,7 @@ int main()
     }
 
     guardar_personaje(&personaje, &indice_archivo_guardado);
+    guardar_historial(personaje.historial, &indice_archivo_guardado);
     return 0;
 
 }
