@@ -66,4 +66,12 @@ int pila_esta_vacia(historial H);
  */
 void guardar_historial(historial H, int *indice_archivo_guardado);
 
+/**
+ * @brief Carga el historial del archivo de guardado elegido por el usario
+ * 
+ * @param H Historial donde cargar los datos
+ * @param indice_archivo_guardado Indice de archivo de guardado elegido
+ */
+void cargar_historial(historial H, int *indice_archivo_guardado);
+
 #endif

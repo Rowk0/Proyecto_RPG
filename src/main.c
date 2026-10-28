@@ -13,6 +13,7 @@ int main()
     /*Si existe un archivo de guardado saltar esta parte*/
     inicializacion_rpg(&indice_archivo_guardado);
     cargar_personaje(&personaje, &indice_archivo_guardado);
+    cargar_historial(personaje.historial, &indice_archivo_guardado);
 
     if (archivo_guardado_vacio(&indice_archivo_guardado) == 1)
     {

@@ -62,7 +62,7 @@ void imprimir_historial(historial H)
 
     while (actual != NULL)
     {
-        printf("%s", actual->accion);
+        printf("%s\n", actual->accion);
         actual = actual->siguiente;
     }
 }
@@ -103,6 +103,31 @@ void guardar_historial(historial H, int *indice_archivo_guardado)
     {
         fprintf(archivo, "%s", H->siguiente->accion);
         H = pop(H);
+    }
+
+    fclose(archivo);
+}
+
+void cargar_historial(historial H, int *indice_archivo_guardado)
+{
+    char ruta_archivo[30];
+    char lineas[100];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/historial.txt", *indice_archivo_guardado);
+
+    FILE *archivo = fopen(ruta_archivo, "r"); //Por ahora está en save_1 más adelante lo hago dinamico
+
+    if (archivo == NULL)
+    {
+        printf("Error al abrir el cargar el historial");
+        return;
+    }
+
+    while (fgets(lineas, sizeof(lineas), archivo) != NULL)
+    {
+        lineas[strcspn(lineas, "\n")] = '\0';
+
+        push(H, lineas);
     }
 
     fclose(archivo);
