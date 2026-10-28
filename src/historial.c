@@ -93,23 +93,17 @@ void guardar_historial(historial H, int *indice_archivo_guardado)
 
     FILE *archivo = fopen(ruta_archivo, "w"); 
 
-    printf("1");
-
     if (archivo == NULL)
     {
         printf("Error al abrir el archivo");
         return;
     }
-    
-     printf("2");
 
     while (pila_esta_vacia(H) == 0)
     {
-        fprintf(archivo, "%s", H->accion);
+        fprintf(archivo, "%s", H->siguiente->accion);
         H = pop(H);
     }
-
-     printf("3");
 
     fclose(archivo);
 }

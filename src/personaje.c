@@ -28,7 +28,7 @@ void cargar_personaje(personaje_ *p, int *indice_archivo_guardado)
 
     if (archivo == NULL)
     {
-        printf("Error al abrir el archivo");
+        printf("Error al abrir el cargar el personaje");
         return;
     }
 
