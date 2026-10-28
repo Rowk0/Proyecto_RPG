@@ -8,12 +8,12 @@ int archivo_guardado_vacio(int *indice_archivo_guardado)
     char ruta_archivo[30];
     char lineas[100];
 
-snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/save.txt", *indice_archivo_guardado);
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/save.txt", *indice_archivo_guardado);
     FILE *archivo = fopen(ruta_archivo, "r"); //Por ahora está en save_1 más adelante lo hago dinamico
 
     if (archivo == NULL)
     {
-        printf("Error al abrir el archivo");
+        printf("Error al verificar si el arhcivo de guardado esta vacio");
         return -1;
     }
 
@@ -200,6 +200,7 @@ void explorar_zona(personaje_ *p, int elegir_ruta)
             else if(evento == 1)
             {
                 printf("Encontraste un objeto!\n");
+                explorando = 0;
             }
             
             else if(evento == 2)
