@@ -65,6 +65,12 @@ int elegir_opcion(void);
 void caminando (void);
 
 /**
+ * @brief funcion de animacion para caminar
+ * 
+ * funcion hecha con ayuda de IA
+ */
+void cargando (void);
+/**
  * @brief elegir que camino tomar
  * 
  */

@@ -45,7 +45,7 @@ void imprimir_enemigos(cola_enemigos Q);
  * se encuentre el jugador
  * 
  */
-void enemigos_x_zona(int elegir_ruta);
+void enemigos_x_zona(personaje_ *p, int elegir_ruta);
 
 
 /*No estoy completamente seguro si se puede modularizar aun mas
@@ -67,6 +67,12 @@ void enemigos_cuevas(cola_enemigos Q);
  * 
  */
 void enemigos_castillo(cola_enemigos Q);
+
+void imprimir_combate(personaje_ *p, cola_enemigos Q);
+
+void ataque(personaje_ *p, cola_enemigos Q);
+
+void ver_inventario(void);
 
 
 #endif

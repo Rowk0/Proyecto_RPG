@@ -1,8 +1,11 @@
 #include "enemigos.h"
 #include "personaje.h"
+#include "commons.h"
 #include <unistd.h>
 
-void enemigos_x_zona(int elegir_ruta)
+
+
+void enemigos_x_zona(personaje_ *p, int elegir_ruta)
 {
     cola_enemigos Q = crear_cola(3);
     switch (elegir_ruta)
@@ -10,15 +13,18 @@ void enemigos_x_zona(int elegir_ruta)
     case 1:
         enemigos_bosque(Q);
         imprimir_enemigos(Q);
+        imprimir_combate(p,Q);
         break;
     
     case 2:
         enemigos_cuevas(Q);
         imprimir_enemigos(Q);
+        imprimir_combate(p,Q);
         break;  
     case 3:
         enemigos_castillo(Q);
         imprimir_enemigos(Q);
+        imprimir_combate(p,Q);
         break;
     default:
         break;
@@ -120,8 +126,7 @@ void imprimir_enemigos(cola_enemigos Q)
                Q->arreglo[indice].puntos_de_vida);
         indice = sucesor(indice, Q);
     }
-    printf("COMBATE\n");
-    sleep(5);
+    sleep(1);
 }
 
 
@@ -219,4 +224,100 @@ void enemigos_castillo(cola_enemigos Q)
 
         enqueue(nuevo, Q);
     }
+}
+
+void imprimir_combate(personaje_ *p, cola_enemigos Q)
+{
+    sleep(2);
+    printf("\t==== COMBATE ====\n");
+    
+    while(!cola_vacia(Q) && p->puntos_de_vida > 0)
+    {
+        enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
+        printf("\n%s: %d PV | Ataque %d | Defensa %d\n", p->nombre, p->puntos_de_vida, p->ataque, p->defensa);
+        printf("Enemigo actual: %s (%d PV)\n", enemigo_actual->nombre, enemigo_actual->puntos_de_vida);
+        printf("Enemigos en espera: %d\n\n", Q->tamanho - 1);
+        printf("1. Atacar\n");
+        printf("2. Ver inventario\n");
+        printf("3. Usar objeto\n");
+        sleep(1);
+
+        int opcion = elegir_opcion();
+        if(opcion == 1)
+        {
+            ataque(p,Q);
+        }
+        else if(opcion == 2)
+        {
+            ver_inventario();
+        }
+        else if(opcion == 3)
+        {
+            //opcion pipe
+        }
+        else
+        {
+            printf("Elige una opcion valida!\n");
+        }        
+    }
+
+    if(p->puntos_de_vida <= 0)
+    {
+        printf("\nHas sido derrotado...");
+        p->historial = push(p->historial, "Has sido derrotado en combate\n");
+    }
+    else
+    {
+        printf("Has ganado el combate!");
+        p->historial = push(p->historial, "Has ganado un combate!\n");
+    }
+}
+
+void ataque(personaje_ *p, cola_enemigos Q)
+{
+    enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
+    enemigo_actual->puntos_de_vida -= p->ataque;
+    if(enemigo_actual->puntos_de_vida < 0)
+    {
+        //para que no quede vida negativa
+        enemigo_actual->puntos_de_vida = 0;
+    }
+    printf("Atacas a %s, le haces %d de Danho.\n", enemigo_actual->nombre, p->ataque);
+    printf("%s: %d PV\n", enemigo_actual->nombre, enemigo_actual->puntos_de_vida);
+    sleep(2);
+
+    if(enemigo_actual->puntos_de_vida == 0)
+    {
+        printf("Mataste a %s.  EPICO\n", enemigo_actual->nombre);
+
+        char accion[64]; //variable accion para guardar la frase y poder mostrarla en historial
+        snprintf(accion, sizeof(accion), "Mataste al enemigo %s\n", enemigo_actual->nombre);
+        p->historial = push(p->historial, accion);
+
+        dequeue(Q);
+        return;
+    }
+
+    int danho_enemigo = enemigo_actual->ataque - p->defensa;
+    
+    if(danho_enemigo < 0)
+    {
+        danho_enemigo = 0;
+    }
+
+    p->puntos_de_vida -= danho_enemigo;
+    if(p->puntos_de_vida < 0)
+    {
+        p->puntos_de_vida = 0; //para no tener vida negativa
+    }
+
+    printf("%s te ataca, recibes %d de danho\n", enemigo_actual->nombre, danho_enemigo);
+    printf("Tienes %d PV", p->puntos_de_vida);
+    sleep(2);
+    system("clear");
+}
+
+void ver_inventario(void)
+{
+    printf("pepe");
 }

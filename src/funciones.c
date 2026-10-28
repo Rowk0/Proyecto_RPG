@@ -8,8 +8,7 @@ int archivo_guardado_vacio(int *indice_archivo_guardado)
     char ruta_archivo[30];
     char lineas[100];
 
-    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
-
+snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/save.txt", *indice_archivo_guardado);
     FILE *archivo = fopen(ruta_archivo, "r"); //Por ahora está en save_1 más adelante lo hago dinamico
 
     if (archivo == NULL)
@@ -40,6 +39,7 @@ void inicializacion_rpg(int *indice_archivo_guardado)
         printf("Error de entrada de archivo de guardado");
         return;
     }
+
 }
 
 void imprimir_guardados(void)/*personaje_ *p*/
@@ -53,7 +53,7 @@ void imprimir_guardados(void)/*personaje_ *p*/
 
 void imprimir_menu()
 {
-    printf("\n====(NOMBRE DEL JUEGO EPICO)====\n");
+    printf("\n====(Fanfared Misadventures)====\n");
     printf("\t==== Menu ====\n");
     printf("\t1. Explorar zona\n");
     printf("\t2. Ver personaje\n");
@@ -65,6 +65,7 @@ void imprimir_menu()
 void selector_menu(personaje_ *p, int *loop_juego)
 {
     int opcion = elegir_opcion();
+    system("clear");
     switch (opcion)
     {
     case 1:
@@ -114,7 +115,7 @@ int elegir_opcion(void)
 void camino(personaje_ *p)
 {
     int elegir_ruta;
-    printf("0. Para abrir el menu\n");
+    printf("0. Para volver el menu\n");
     printf("1. Para ir a Bosque de Almas\n");
     printf("2. Para ir a Sistema de Cuevas\n");
     printf("3. Para ir a Castillo en Ruinas\n");
@@ -125,6 +126,7 @@ void camino(personaje_ *p)
     case 0:
         printf("Volviendo al menu..");
         sleep(1);
+        system("clear");
         break;
     case 1:
         printf("Entrando al Bosque de Almas\n");
@@ -151,6 +153,20 @@ void camino(personaje_ *p)
 void caminando(void)
 {
     printf("caminando");
+    fflush(stdout);
+
+    for (int i = 0; i < 3; i++)
+    {
+        sleep(1);
+        printf(".");
+        fflush(stdout);
+    }
+    printf("\n");
+}
+
+void cargando(void)
+{
+    printf("cargando");
     fflush(stdout);
 
     for (int i = 0; i < 3; i++)
@@ -189,7 +205,32 @@ void explorar_zona(personaje_ *p, int elegir_ruta)
             else if(evento == 2)
             {
                 printf("Encontraste a unos enemigos!\n");
-                enemigos_x_zona(elegir_ruta);
+                enemigos_x_zona(p,  elegir_ruta);
+            }
+        }
+
+        if(p->puntos_de_vida <= 0)
+        {
+            printf("Volviendo al menu\n");
+            sleep(2);
+            p->puntos_de_vida = 20;
+            explorando = 0;
+        }
+        else
+        {
+            printf("\n Deseas seguir explorando?\n");
+            printf("1: Seguir explorando\n");
+            printf("2: Volver al menu\n");
+            explorando = elegir_opcion();
+            while(explorando != 1 && explorando != 2)
+            {
+                printf("Ingrese una opcion valida!\n");
+                sleep(2);
+                system("clear");
+                printf("\n Deseas seguir explorando?\n");
+                printf("1: Seguir explorando\n");
+                printf("2: Volver al menu\n");
+                explorando = elegir_opcion();
             }
         }
 
