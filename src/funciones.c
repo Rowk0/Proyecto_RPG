@@ -119,8 +119,13 @@ void camino(personaje_ *p)
     printf("2. Para ir a Sistema de Cuevas\n");
     printf("3. Para ir a Castillo en Ruinas\n");
     elegir_ruta = elegir_opcion();
+
     switch (elegir_ruta)
     {
+    case 0:
+        printf("Volviendo al menu..");
+        sleep(1);
+        break;
     case 1:
         printf("Entrando al Bosque de Almas\n");
         explorar_zona(p, elegir_ruta);
@@ -135,6 +140,9 @@ void camino(personaje_ *p)
         exit(0);
     default:
         printf("Elige una zona valida!\n");
+        sleep(1);
+        /*system("clear");
+        camino(p);*/
         break;
     }
     
@@ -175,12 +183,12 @@ void explorar_zona(personaje_ *p, int elegir_ruta)
 
             else if(evento == 1)
             {
-                printf("encontraste un objeto!\n");
+                printf("Encontraste un objeto!\n");
             }
             
             else if(evento == 2)
             {
-                printf("encontraste a unos enemigos!\n");
+                printf("Encontraste a unos enemigos!\n");
                 enemigos_x_zona(elegir_ruta);
             }
         }
