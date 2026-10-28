@@ -135,16 +135,15 @@ void camino(personaje_ *p)
     case 2:
         printf("Entrando al Sistema de Cuevas\n");
         explorar_zona(p, elegir_ruta);
-        exit(0);
+        break;
     case 3:
         printf("Entrando al Castillo en Ruinas\n");
         explorar_zona(p, elegir_ruta);
-        exit(0);
+        break;
     default:
         printf("Elige una zona valida!\n");
         sleep(1);
-        /*system("clear");
-        camino(p);*/
+        system("clear");
         break;
     }
     
