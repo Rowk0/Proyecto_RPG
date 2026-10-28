@@ -174,7 +174,7 @@ static objeto_ extraer_objeto_al_azar(inventario botin)
 	int random;
 	posicion p = botin;
 
-	while(p != NULL && p != botin)
+	while(p == NULL || p == botin)
 	{
 		random = rand() % 3 + 1;
 		for(int i = 0; i < random; i++)
