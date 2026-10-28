@@ -50,4 +50,20 @@ historial pop(historial H);
  */
 void imprimir_historial(historial H);
 
+/**
+ * @brief Verifica si la pila dada está vacia
+ * 
+ * @param H Historial a verificar
+ * @return int Devuelve 1 si esta vacia o 0 en el caso contrario
+ */
+int pila_esta_vacia(historial H);
+
+/**
+ * @brief Guarda el historial de acciones de un personaje en un archivo .txt
+ * 
+ * @param H Historial a guardar
+ * @param indice_archivo_guardado Indice de archivo de guardado cargado
+ */
+void guardar_historial(historial H, int *indice_archivo_guardado);
+
 #endif

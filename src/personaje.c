@@ -22,7 +22,7 @@ void cargar_personaje(personaje_ *p, int *indice_archivo_guardado)
     char ruta_archivo[30];
     char lineas[100];
 
-    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/save.txt", *indice_archivo_guardado);
 
     FILE *archivo = fopen(ruta_archivo, "r"); //Por ahora está en save_1 más adelante lo hago dinamico
 
@@ -69,7 +69,7 @@ void guardar_personaje(personaje_ *p, int *indice_archivo_guardado)
 {
     char ruta_archivo[30];
 
-    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d.txt", *indice_archivo_guardado);
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/save.txt", *indice_archivo_guardado);
 
     FILE *archivo = fopen(ruta_archivo, "w"); 
 

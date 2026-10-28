@@ -66,3 +66,38 @@ void imprimir_historial(historial H)
         actual = actual->siguiente;
     }
 }
+
+int pila_esta_vacia(historial H)
+{
+    if (H->siguiente == NULL)
+    {
+        return 1;
+    }
+    else 
+    {
+        return 0;
+    }
+}
+
+void guardar_historial(historial H, int *indice_archivo_guardado)
+{
+    char ruta_archivo[30];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/historial.txt", *indice_archivo_guardado);
+
+    FILE *archivo = fopen(ruta_archivo, "w"); 
+
+    if (archivo == NULL)
+    {
+        printf("Error al abrir el archivo");
+        return;
+    }
+    
+    while (pila_esta_vacia(H) == 0)
+    {
+        fprintf(archivo, "%s", H->accion);
+        H = pop(H);
+    }
+
+    fclose(archivo);
+}
