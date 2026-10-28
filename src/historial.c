@@ -81,11 +81,19 @@ int pila_esta_vacia(historial H)
 
 void guardar_historial(historial H, int *indice_archivo_guardado)
 {
+    if (H == NULL)
+    {
+        printf("Error: El historial es nulo");
+        return;
+    }
+    
     char ruta_archivo[30];
 
     snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/historial.txt", *indice_archivo_guardado);
 
     FILE *archivo = fopen(ruta_archivo, "w"); 
+
+    printf("1");
 
     if (archivo == NULL)
     {
@@ -93,11 +101,15 @@ void guardar_historial(historial H, int *indice_archivo_guardado)
         return;
     }
     
+     printf("2");
+
     while (pila_esta_vacia(H) == 0)
     {
         fprintf(archivo, "%s", H->accion);
         H = pop(H);
     }
+
+     printf("3");
 
     fclose(archivo);
 }

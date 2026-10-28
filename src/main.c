@@ -19,13 +19,17 @@ int main()
         creacion_personaje(&personaje);
     }
 
+    personaje.historial = push(personaje.historial, "PROBANDO GUARDADO");
+
     while(loop_juego)
     {
         imprimir_menu();
         selector_menu(&personaje, &loop_juego);
     }
 
+    printf("Guardando personaje");
     guardar_personaje(&personaje, &indice_archivo_guardado);
+    printf("Guardando Historial");
     guardar_historial(personaje.historial, &indice_archivo_guardado);
     return 0;
 

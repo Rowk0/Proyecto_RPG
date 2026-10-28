@@ -184,12 +184,14 @@ void explorar_zona(personaje_ *p, int elegir_ruta)
             else if(evento == 1)
             {
                 printf("Encontraste un objeto!\n");
+                explorando = 0;
             }
             
             else if(evento == 2)
             {
                 printf("Encontraste a unos enemigos!\n");
                 enemigos_x_zona(elegir_ruta);
+                explorando = 0;
             }
         }
 
