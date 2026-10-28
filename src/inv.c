@@ -10,8 +10,13 @@
 #include "objetos.h"
 #include "personaje.h"
 
-inventario crear_inventario_vacio(inventario i) // !? Falta que borre un inventario si ya existe!!
+inventario crear_inventario_vacio(inventario i)
 {
+	if(inventario_vacio(i) == false)
+	{
+		i = eliminar_inventario(i);
+	}
+
 	i = malloc(sizeof(struct nodo_objeto));
 	if(i == NULL)
 	{
@@ -22,7 +27,108 @@ inventario crear_inventario_vacio(inventario i) // !? Falta que borre un inventa
 
 	return i;
 }
-inventario tomar_objeto(inventario i, objeto_ o)
+
+inventario cargar_inventario(inventario i, int numero_de_guardado)
+{
+	FILE* archivo_inventario;
+	FILE* archivo_lootpool;
+	i = NULL; // Inventario a cargar.
+	int id; // Id a leer de inventario.txt.
+	int numero_lineas; // Variable utilizada para posicionar el cursor detras del objeto a insertar en el inventario del personaje.
+	char caracter = '\0';
+
+	// Revisa si se leyeron correctamente 4 parametros.
+	int leer;
+
+	// Variables para grabar los valores leidos de lootpool.csv, y luego copiar en un objeto individual.
+	int id_objeto, clase_objeto;
+	char* nombre_objeto = NULL;
+	char* descripcion_objeto = NULL;
+
+	// Crear un inventario vacio.
+
+	i = crear_inventario_vacio(i);
+
+	// Abrir archivo de todos los objetos
+	archivo_lootpool = fopen("lootpool.csv", "r");
+	if(archivo_lootpool == NULL)
+	{
+		printf("Error de cargar_inventario: No se pudo abrir el archivo\n");
+		return i;
+	}
+
+	// Abrir archivo de inventario del personaje (sostiene las ids de los objetos en el inventario)
+	switch(numero_de_guardado)
+	{
+		case 1:
+		archivo_inventario = fopen("save/save_1/inventario.txt", "r");
+		if(archivo_inventario == NULL)
+		{
+			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario\n");
+			return i;
+		}
+		break;
+
+		case 2:
+		archivo_inventario = fopen("save/save_2/inventario.txt", "r");
+		if(archivo_inventario == NULL)
+		{
+			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario\n");
+			return i;
+		}
+		break;
+
+		case 3:
+		archivo_inventario = fopen("save/save_3/inventario.txt", "r");
+		if(archivo_inventario == NULL)
+		{
+			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario\n");
+			return i;
+		}
+		break;
+
+		default:
+		printf("Error de cargar_inventario: Numero de guardado invalido\n");
+		return i;
+		break;
+	}
+
+	while(fscanf(archivo_inventario, "%d", &id) == 1)
+	{
+		printf("id: %d\n", id);
+		// Coloca el cursor detras del id del objeto a cargar
+		for(numero_lineas = 1; numero_lineas < id; caracter = fgetc(archivo_lootpool))
+		{
+			if(caracter == '\n')
+			{
+				numero_lineas++;
+			}
+		}
+		// Parsing
+		leer = fscanf(archivo_lootpool, "%d, %d, %49c[^,], %128c[^,]", &id_objeto, &clase_objeto, nombre_objeto, descripcion_objeto);
+		if(leer != 4 && !feof(archivo_lootpool))
+		{
+			printf("Error de cargar_inventario: Formato de archivo incorrecto\n");
+			return i;
+		}
+		if(ferror(archivo_lootpool))
+		{
+			printf("Error de cargar_inventario: Error al leer el archivo\n");
+			return i;
+		}
+		// Crear el objeto en base a los parametros leidos.
+		i = insertar_objeto(i, crear_objeto(id_objeto, clase_objeto, nombre_objeto, descripcion_objeto));
+	}
+	printf("Debug: Inventario impreso:\n");
+	imprimir_objetos(i);
+
+	fclose(archivo_inventario);
+	fclose(archivo_lootpool);
+
+	return i;
+}
+
+inventario insertar_objeto(inventario i, objeto_ o)
 {
 	// Restricciones: El inventario debe existir y el inventario no puede estar lleno.
 	// Revisa si el inventario existe.
@@ -53,6 +159,43 @@ inventario tomar_objeto(inventario i, objeto_ o)
     p->siguiente = aux;
 
     return i;
+}
+
+static objeto_ extraer_objeto_al_azar(inventario botin)
+{
+	objeto_ o = {0, 0, NULL, NULL};
+
+	if(inventario_vacio(botin) == true)
+	{
+		printf("Error de extraer_objeto_al_azar: Inventario vacio o nulo\n");
+		return o;
+	}
+
+	int random;
+	posicion p = botin;
+
+	while(p != NULL && p != botin)
+	{
+		random = rand() % 3 + 1;
+		for(int i = 0; i < random; i++)
+		{
+			p = p->siguiente;
+		}
+	}
+
+	o = p->objeto;
+	eliminar_objeto_por_id(botin, p->objeto.id);
+	return o;
+}
+
+inventario tomar_objeto_de_botin(inventario i, inventario botin)
+{
+	objeto_ o;
+
+	o = extraer_objeto_al_azar(botin);
+	i = insertar_objeto(i, o);
+
+	return i;
 }
 
 inventario usar_objeto_por_id(inventario i, int id, personaje_ personaje) // (anhadir parametro de enemigo)
