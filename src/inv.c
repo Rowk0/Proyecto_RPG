@@ -28,6 +28,39 @@ inventario crear_inventario_vacio(inventario i)
 	return i;
 }
 
+inventario insertar_objeto(inventario i, objeto_ o)
+{
+	// Restricciones: El inventario debe existir y el inventario no puede estar lleno.
+	// Revisa si el inventario existe.
+	if(i == NULL)
+	{
+		printf("Error de tomar_objeto: Inventario nulo\n");
+		return i;
+	}
+
+	// Posiciona un puntero posicion al ultimo elemento del inventario.
+	posicion p = i;
+	while(p->siguiente != NULL)
+	{
+		p = p->siguiente;
+	}
+
+	// Crea el nodo auxilar a sostener el objeto a insertar.
+	inventario aux = malloc(sizeof(struct nodo_objeto));
+    if(aux == NULL)
+    {
+        printf("Out of memory!\n");
+        return aux;
+    }
+
+	// Inserta el nodo auxiliar al final de la lista.
+    aux->objeto = o;
+    aux->siguiente = NULL;
+    p->siguiente = aux;
+
+    return i;
+}
+
 inventario cargar_inventario(inventario i, int numero_de_guardado)
 {
 	FILE* archivo_inventario;
@@ -126,39 +159,6 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 	fclose(archivo_lootpool);
 
 	return i;
-}
-
-inventario insertar_objeto(inventario i, objeto_ o)
-{
-	// Restricciones: El inventario debe existir y el inventario no puede estar lleno.
-	// Revisa si el inventario existe.
-	if(i == NULL)
-	{
-		printf("Error de tomar_objeto: Inventario nulo\n");
-		return i;
-	}
-
-	// Posiciona un puntero posicion al ultimo elemento del inventario.
-	posicion p = i;
-	while(p->siguiente != NULL)
-	{
-		p = p->siguiente;
-	}
-
-	// Crea el nodo auxilar a sostener el objeto a insertar.
-	inventario aux = malloc(sizeof(struct nodo_objeto));
-    if(aux == NULL)
-    {
-        printf("Out of memory!\n");
-        return aux;
-    }
-
-	// Inserta el nodo auxiliar al final de la lista.
-    aux->objeto = o;
-    aux->siguiente = NULL;
-    p->siguiente = aux;
-
-    return i;
 }
 
 static objeto_ extraer_objeto_al_azar(inventario botin)
