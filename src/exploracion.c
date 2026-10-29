@@ -1,9 +1,9 @@
 #include "exploracion.h"
 #include "enemigos.h"
-#include "commons.h"
+#include "game_menu.h"
 #include <unistd.h>
 
-void camino(personaje_ *p)
+void camino(personaje_ *p, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo)
 {
     int elegir_ruta;
     printf("0. Para volver el menu\n");
@@ -21,15 +21,15 @@ void camino(personaje_ *p)
         break;
     case 1:
         printf("Entrando al Bosque de Almas\n");
-        explorar_zona(p, elegir_ruta);
+        explorar_zona(p, elegir_ruta, i, botin_bosque, botin_cuevas, botin_castillo);
         break;
     case 2:
         printf("Entrando al Sistema de Cuevas\n");
-        explorar_zona(p, elegir_ruta);
+        explorar_zona(p, elegir_ruta, i, botin_bosque, botin_cuevas, botin_castillo);
         break;
     case 3:
         printf("Entrando al Castillo en Ruinas\n");
-        explorar_zona(p, elegir_ruta);
+        explorar_zona(p, elegir_ruta, i, botin_bosque, botin_cuevas, botin_castillo);
         break;
     default:
         printf("Elige una zona valida!\n");
@@ -68,8 +68,9 @@ void cargando(void)
     printf("\n");
 }
 
-void explorar_zona(personaje_ *p, int elegir_ruta)
+void explorar_zona(personaje_ *p, int elegir_ruta, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo)
 {
+	objeto_ o = {0, 0, NULL, NULL};
     int explorando = 1;
 
     while (explorando == 1)
@@ -89,14 +90,28 @@ void explorar_zona(personaje_ *p, int elegir_ruta)
 
             else if(evento == 1)
             {
-                printf("Encontraste un objeto!\n");
+                switch(elegir_ruta)
+				{
+					case 1:
+					tomar_objeto_de_botin(i, botin_bosque, o);
+					break;
+					case 2:
+					tomar_objeto_de_botin(i, botin_cuevas, o);
+					break;
+					case 3:
+					tomar_objeto_de_botin(i, botin_castillo, o);
+					break;
+					default:
+					printf("Error de explorar_zona: Ruta para extraer botin invalida\n");
+					break;
+				}
                 explorando = 0;
             }
             
             else if(evento == 2)
             {
                 printf("Encontraste a unos enemigos!\n");
-                enemigos_x_zona(p,  elegir_ruta);
+                enemigos_x_zona(p, elegir_ruta, i);
             }
         }
 

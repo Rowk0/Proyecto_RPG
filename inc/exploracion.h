@@ -1,11 +1,8 @@
 #ifndef EXPLORACION
 #define EXPLORACION
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
 #include "personaje.h"
+#include "inventario.h"
 
 /**
  * @brief funcion de animacion para caminar
@@ -25,7 +22,7 @@ void cargando (void);
  * @brief elegir que camino tomar
  * 
  */
-void camino(personaje_ *p);
+void camino(personaje_ *p, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo);
 
 /**
  * @brief funcion que sirve para cualquier zona que el jugador explore
@@ -33,6 +30,6 @@ void camino(personaje_ *p);
  * a sus respectivas zonas
  * 
  */
-void explorar_zona(personaje_ *p, int elegir_ruta);
+void explorar_zona(personaje_ *p, int elegir_ruta, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo);
 
 #endif

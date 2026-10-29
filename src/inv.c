@@ -8,13 +8,12 @@
 #include <string.h> 
 #include "inventario.h"
 #include "objetos.h"
-#include "personaje.h"
 
 inventario crear_inventario_vacio(inventario i)
 {
 	if(inventario_vacio(i) == false)
 	{
-		i = eliminar_inventario(i);
+		eliminar_inventario(i);
 	}
 
 	i = malloc(sizeof(struct nodo_objeto));
@@ -63,9 +62,17 @@ inventario insertar_objeto(inventario i, objeto_ o)
 
 inventario cargar_inventario(inventario i, int numero_de_guardado)
 {
+	// Crear un inventario vacio.
+	i = crear_inventario_vacio(i);
+
+	if(numero_de_guardado < 1 || numero_de_guardado > 3)	
+	{
+		printf("Error de cargar_inventario: Numero de guardado invalido\n");
+		return i;
+	}
+
 	FILE* archivo_inventario;
 	FILE* archivo_lootpool;
-	i = NULL; // Inventario a cargar.
 	int id; // Id a leer de inventario.txt.
 	int numero_lineas; // Variable utilizada para posicionar el cursor detras del objeto a insertar en el inventario del personaje.
 	char caracter = '\0';
@@ -77,10 +84,6 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 	int id_objeto, clase_objeto;
 	char* nombre_objeto = NULL;
 	char* descripcion_objeto = NULL;
-
-	// Crear un inventario vacio.
-
-	i = crear_inventario_vacio(i);
 
 	// Abrir archivo de todos los objetos
 	archivo_lootpool = fopen("lootpool.csv", "r");
@@ -97,7 +100,7 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 		archivo_inventario = fopen("save/save_1/inventario.txt", "r");
 		if(archivo_inventario == NULL)
 		{
-			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario\n");
+			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario.txt\n");
 			return i;
 		}
 		break;
@@ -106,7 +109,7 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 		archivo_inventario = fopen("save/save_2/inventario.txt", "r");
 		if(archivo_inventario == NULL)
 		{
-			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario\n");
+			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario.txt\n");
 			return i;
 		}
 		break;
@@ -115,14 +118,9 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 		archivo_inventario = fopen("save/save_3/inventario.txt", "r");
 		if(archivo_inventario == NULL)
 		{
-			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario\n");
+			printf("Error de cargar_inventario: No se pudo abrir el archivo inventario.txt\n");
 			return i;
 		}
-		break;
-
-		default:
-		printf("Error de cargar_inventario: Numero de guardado invalido\n");
-		return i;
 		break;
 	}
 
@@ -161,6 +159,147 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 	return i;
 }
 
+static inventario inicializar_botin(inventario botin, int numero_de_zona)
+{
+	// Crear un inventario vacio.
+	botin = crear_inventario_vacio(botin);
+
+	FILE* archivo_lootpool;
+
+	// Revisa si se leyeron correctamente 4 parametros.
+	int leer;
+
+	// Contador de botines ingresados. Controla que se ingresen exactamente 4 objetos.
+	int cont_botines;
+
+	// Variables para grabar los valores leidos de lootpool.csv, y luego copiar en un objeto individual.
+	int id_objeto, clase_objeto;
+	char nombre_objeto[50];
+	char descripcion_objeto[128];
+
+	if(numero_de_zona < 1 || numero_de_zona > 3)
+	{
+		printf("Error de inicializar_botin: Numero de zona invalida\n");
+		return botin;
+	}
+
+	// Abrir archivo de todos los objetos.
+	archivo_lootpool = fopen("lootpool.csv", "r");
+	if(archivo_lootpool == NULL)
+	{
+		printf("Error de inicializar_botin: No se pudo abrir el archivo\n");
+		return botin;
+	}
+
+	// Colocar cursor en la posicion correcta dependiendo de la zona.
+	if(numero_de_zona == 2)
+	{
+		fseek(archivo_lootpool, 262, SEEK_SET);
+	}
+	else if(numero_de_zona == 3)
+	{
+		fseek(archivo_lootpool, -314, SEEK_END);
+	}
+
+	for(cont_botines = 0; cont_botines < 4 && !feof(archivo_lootpool); cont_botines++)
+	{
+		leer = fscanf(archivo_lootpool, "%d, %d, %49[^,], %127[^\n]", &id_objeto, &clase_objeto, nombre_objeto, descripcion_objeto);
+		if(leer != 4 && !feof(archivo_lootpool))
+		{
+			printf("Error de inicializar_botin en zona %d: Formato de archivo incorrecto\n", numero_de_zona);
+			return botin;
+		}
+		if(ferror(archivo_lootpool))
+		{
+			printf("Error de inicializar_botin: Error al leer el archivo\n");
+			return botin;
+		}
+		// Crear el objeto en base a los parametros leidos.
+		botin = insertar_objeto(botin, crear_objeto(id_objeto, clase_objeto, nombre_objeto, descripcion_objeto));
+	}
+
+	fclose(archivo_lootpool);
+
+	return botin;
+}
+
+static inventario corregir_inicializacion_botin(inventario botin, int numero_de_guardado)
+{
+	// Idea: Crear funcion cargar_botin que corra inicializar_botin y luego corregir_inicializacion_botin
+	// Inicializar botin antes de correr esto!!!
+	FILE* archivo_objetos_tomados;
+	FILE* archivo_lootpool;
+	int id; // Id a leer de inventario.txt.
+
+	if(numero_de_guardado < 1 || numero_de_guardado > 3)
+	{
+		printf("Error de corregir_inicializacion_botin: Numero de guardado invalido\n");
+		return botin;
+	}
+
+	// Abrir archivo de todos los objetos
+	archivo_lootpool = fopen("lootpool.csv", "r");
+	if(archivo_lootpool == NULL)
+	{
+		printf("Error de corregir_inicializacion_botin: No se pudo abrir el archivo\n");
+		return botin;
+	}
+
+	// Abrir archivo de inventario del personaje (sostiene las ids de los objetos en el inventario)
+	switch(numero_de_guardado)
+	{
+		case 1:
+		archivo_objetos_tomados = fopen("save/save_1/objetos_tomados.txt", "r");
+		if(archivo_objetos_tomados == NULL)
+		{
+			printf("Error de corregir_inicializacion_botin: No se pudo abrir el archivo objetos_tomados.txt\n");
+			return botin;
+		}
+		break;
+
+		case 2:
+		archivo_objetos_tomados = fopen("save/save_2/objetos_tomados.txt", "r");
+		if(archivo_objetos_tomados == NULL)
+		{
+			printf("Error de corregir_inicializacion_botin: No se pudo abrir el archivo objetos_tomados.txt\n");
+			return botin;
+		}
+		break;
+
+		case 3:
+		archivo_objetos_tomados = fopen("save/save_3/objetos_tomados.txt", "r");
+		if(archivo_objetos_tomados == NULL)
+		{
+			printf("Error de corregir_inicializacion_botin: No se pudo abrir el archivo objetos_tomados.txt\n");
+			return botin;
+		}
+		break;
+	}
+
+	while(fscanf(archivo_objetos_tomados, "%d", &id) == 1)
+	{
+		printf("id de objeto a eliminar: %d\n", id);
+		eliminar_objeto_por_id(botin, id);
+	}
+
+	fclose(archivo_objetos_tomados);
+	fclose(archivo_lootpool);
+
+	return botin;
+}
+
+inventario cargar_botin(inventario botin, int numero_de_zona, int numero_de_guardado)
+{
+	// En main, correr esta funcion en cada lista de botines.
+	if(inventario_vacio(botin) == false)
+	{
+		botin = inicializar_botin(botin, numero_de_zona);
+		botin = corregir_inicializacion_botin(botin, numero_de_guardado);
+	}
+
+
+	return botin;
+}
 static objeto_ extraer_objeto_al_azar(inventario botin)
 {
 	objeto_ o = {0, 0, NULL, NULL};
@@ -188,142 +327,29 @@ static objeto_ extraer_objeto_al_azar(inventario botin)
 	return o;
 }
 
-inventario tomar_objeto_de_botin(inventario i, inventario botin)
+void tomar_objeto_de_botin(inventario i, inventario botin, objeto_ o)
 {
-	objeto_ o;
+	char eleccion;
 
 	o = extraer_objeto_al_azar(botin);
-	i = insertar_objeto(i, o);
-
-	return i;
-}
-
-inventario usar_objeto_por_id(inventario i, int id, personaje_ personaje) // (anhadir parametro de enemigo)
-{
-	if(inventario_vacio(i) == true)
+	printf("Encontraste un objeto!\n");
+	analizar_objeto(o);
+	printf("Tomar %s? (S/n)\n", o.nombre);
+	printf("-> ");
+	while(scanf("%c", &eleccion) == 0 || (eleccion != 'S' && eleccion != 'n'))
 	{
-		printf("Error de usar_objeto_por_id: Inventario vacio o nulo\n");
+		printf("Caracter invalido, intente de nuevo\n-> ");
 	}
-
-	posicion p;
-	p = encontrar_objeto_por_id(i, id);
-
-	// Accionar el objeto
-	switch(p->objeto.clase)
+	switch(eleccion)
 	{
-		case EQUIPABLE:
-		{
-			switch(id) 
-			{
-				case 1:
-				{
-					personaje.ataque = 8;
-					break;
-				}
-				case 2:
-				{
-					personaje.ataque = 12;
-					break;
-				}
-				case 3:
-				{
-					personaje.ataque = 16;
-					break;
-				}
-				default:
-				{
-					printf("Error de usar_objeto_por_id: Equipable ausente\n");
-					break;
-				}
-			}
-			break;
-		}
-		case CONSUMIBLE:
-		{
-			switch(id) 
-			{
-				case 4:
-				{
-					personaje.puntos_de_vida += 15;
-					break;
-				}
-				case 5:
-				{
-					// (quitar slashes de comentario al implementar)
-					//personaje.regeneracion = 4; 
-					break;
-				}
-				case 6:
-				{
-					personaje.puntos_de_vida += 30;
-					break;
-				}
-				case 7:
-				{
-					// (quitar slashes de comentario al implementar)
-					//enemigo.puntos_de_vida -= 30;
-					break;
-				}
-				case 8:
-				{
-					// (quitar slashes de comentario al implementar)
-					//enemigo.envenenado = true;
-					break;
-				}
-				case 9:
-				{
-					// (quitar slashes de comentario al implementar)
-					//personaje.espejo_activo = true,
-					break;
-				}
-				default:
-				{
-					printf("Error de usar_objeto_por_id: Consumible ausente\n");
-					break;
-				}
-			}
-			eliminar_objeto_por_id(i, id);
-			break;
-		}
-		case ACCESORIO:
-		{
-			switch(id)
-			{
-				case 10:
-				{
-					// (quitar slashes de comentario al implementar)
-					//personaje.accesorio = BANDANA_NINJA;
-					break;
-				}
-				case 11:
-				{
-					// (quitar slashes de comentario al implementar)
-					//personaje.accesorio = ARO_CARMESI;
-					break;
-				}
-				case 12:
-				{
-					// (quitar slashes de comentario al implementar)
-					//personaje.accesorio = CORONA_REY;
-					break;
-				}
-				default:
-				{
-					printf("Error de usar_objeto_por_id: Accesorio ausente\n");
-					break;
-				}
-			}
-			eliminar_objeto_por_id(i, id);
-			break;
-		}
-		default:
-		{
-			printf("Error de usar_objeto_por_id: Clase invalida\n");
-			break;
-		}
-	}
+		case 'S':
+		i = insertar_objeto(i, o);
+		break;
 
-	return i;
+		case 'n':
+		printf("Ignoras %s y sigues con tu camino...\n", o.nombre);
+		break;
+	}
 }
 
 posicion encontrar_objeto_por_id(inventario i, int id)
@@ -339,13 +365,13 @@ posicion encontrar_objeto_por_id(inventario i, int id)
 	{
 		if(p->objeto.id == id)
 		{
-			printf("Objeto encontrado!\n");
-			analizar_objeto(p->objeto);
+			//printf("Objeto encontrado!\n");
+			//analizar_objeto(p->objeto);
 			return p;
 		}
 		p = p->siguiente;
 	}
-	printf("Objeto no encontrado! :<\n");
+	//printf("Objeto no encontrado! :<\n");
 	return NULL;
 }
 
@@ -362,14 +388,13 @@ posicion encontrar_objeto_anterior_por_id(inventario i, int id)
 	{
 		if(p->siguiente->objeto.id == id)
 		{
-			// Quitar funciones de mensaje despues de arreglar bugs.
-			printf("encontrar_objeto_anterior_por_id: Objeto anterior encontrado!\n");
-			analizar_objeto(p->objeto);
+			//printf("encontrar_objeto_anterior_por_id: Objeto anterior encontrado!\n");
+			//analizar_objeto(p->objeto);
 			return p;
 		}
 		p = p->siguiente;
 	}
-	printf("encontrar_objeto_anterior_por_id: Objeto no encontrado! :<\n");
+	//printf("encontrar_objeto_anterior_por_id: Objeto no encontrado! :<\n");
 	return NULL;
 }
 
@@ -386,13 +411,13 @@ posicion encontrar_objeto_por_nombre(inventario i, char* nombre)
 	{
 		if(strcmp(p->objeto.nombre, nombre) == 0)
 		{
-			printf("encontrar_objeto_por_nombre: Objeto encontrado!\n");
-			analizar_objeto(p->objeto);
+			//printf("encontrar_objeto_por_nombre: Objeto encontrado!\n");
+			//analizar_objeto(p->objeto);
 			return p;
 		}
 		p = p->siguiente;
 	}
-	printf("encontrar_objeto_por_nombre: Objeto no encontrado! :<\n");
+	//printf("encontrar_objeto_por_nombre: Objeto no encontrado! :<\n");
 	return NULL;
 }
 
@@ -409,13 +434,13 @@ posicion encontrar_objeto_anterior_por_nombre(inventario i, char* nombre)
 	{
 		if(strcmp(p->siguiente->objeto.nombre, nombre) == 0)
 		{
-			printf("encontrar_objeto_por_anterior_nombre: Objeto encontrado!\n");
-			analizar_objeto(p->objeto);
+			//printf("encontrar_objeto_por_anterior_nombre: Objeto encontrado!\n");
+			//analizar_objeto(p->objeto);
 			return p;
 		}
 		p = p->siguiente;
 	}
-	printf("encontrar_objeto_anterior_por_nombre: Objeto no encontrado! :<\n");
+	//printf("encontrar_objeto_anterior_por_nombre: Objeto no encontrado! :<\n");
 	return NULL;
 }
 
@@ -435,15 +460,15 @@ void imprimir_objetos(inventario i)
 		printf("Error de imprimir_objetos: Inventario nulo\n");
 		return;
 	}
-	else if(i->siguiente == NULL)
-	{
-		printf("imprimir_objetos: Inventario vacio!\n\n");
-		return;
-	}
 	
 	printf("  ===========\n");
 	printf("  Inventario:\n");
 	printf("  ===========\n\n");
+	if(i->siguiente == NULL)
+	{
+		printf("Vacio!\n\n");
+		return;
+	}
 	posicion p = i->siguiente;
 	while(p != NULL)
 	{
@@ -455,20 +480,14 @@ void imprimir_objetos(inventario i)
 
 void eliminar_objeto_por_id(inventario i, int id)
 {
-	if(i == NULL)
+	if(inventario_vacio(i) == true)
 	{
-		printf("Error de eliminar_objeto: Inventario nulo\n");
-		return;
-	}
-	else if(inventario_vacio(i) == true)
-	{
-		printf("Error de eliminar_objeto: Inventario vacio\n");
+		printf("Error de eliminar_objeto: Inventario vacio o nulo\n");
 		return;
 	}
 	
 	posicion p, aux;
 	p = encontrar_objeto_anterior_por_id(i, id); // (habia dado error la funcion de encontrar objeto anterior)
-	printf("oliwi\n");
 	if(p == NULL)
 	{
 		printf("Error de eliminar_objeto: No se encontro el objeto a eliminar\n");
@@ -481,7 +500,7 @@ void eliminar_objeto_por_id(inventario i, int id)
 	free(aux);
 }
 
-inventario eliminar_inventario(inventario i)
+void eliminar_inventario(inventario i)
 {
 	posicion aux = i;
 
@@ -491,5 +510,4 @@ inventario eliminar_inventario(inventario i)
 		free(i);
 		i = aux;
 	}
-	return i;
 }

@@ -1,12 +1,12 @@
 1,1,Espada de piedra,Aumenta el ataque en 8.
-2,1,Espada afilada de hierro,Aumenta el ataque en 12.
-3,1,Katana de diamante,Aumenta el ataque en 16.
-4,2,Pocima de vida menor,Restaura 15 puntos de vida.
-5,2,Pocima de regeneracion,Aplica regeneración al personaje. Este efecto restaura 5 PV al personaje por 4 turnos.
-6,2,Pocima de vida mayor,Restaura 30 puntos de vida.
-7,2,Bomba arrojadiza,Explota, infligiendo 25 de daño a un oponente.
-8,2,Frasco de veneno,Envenena al oponente. Un oponente envenenado recibe 5 de daño al final/inicio de su turno.
-9,2,Espejo magico,Devuelve un ataque a un oponente.
-10,3,Bandana ninja,Otorga al personaje un 35% de probabilidad de esquivar un ataque de un enemigo.
-11,3,Aro carmesi, Restaura 3 puntos de vida al inicio de cada turno.
+2,2,Pocima de vida menor,Restaura 15 puntos de vida.
+3,2,Bomba arrojadiza,Explota e inflige 25 de daño a un oponente.
+4,3,Bandana ninja,Otorga al personaje un 35% de probabilidad de esquivar un ataque de un enemigo.
+5,1,Espada afilada de hierro,Aumenta el ataque en 12.
+6,2,Pocima de regeneracion,Aplica regeneración al personaje. Este efecto restaura 5 PV al personaje por 4 turnos.
+7,2,Frasco de veneno,Envenena al oponente. Un oponente envenenado recibe 5 de daño al final/inicio de su turno.
+8,3,Aro carmesi, Restaura 3 puntos de vida al inicio de cada turno.
+9,1,Katana de diamante,Aumenta el ataque en 16.
+10,2,Pocima de vida mayor,Restaura 30 puntos de vida.
+11,2,Espejo magico,Devuelve un ataque a un oponente.
 12,3,Corona del Rey Olvidado,Otorga un 35% de probabilidad de convertir un ataque normal a uno crítico. Un ataque crítico inflige el doble del daño normal.

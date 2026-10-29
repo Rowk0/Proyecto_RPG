@@ -3,6 +3,7 @@
 #define MIN_TAMANHO_COLA 3
 
 #include "personaje.h"
+#include "inventario.h"
 
 /**
  * @brief Estructura del enemigo
@@ -16,6 +17,7 @@ typedef struct
     char nombre[20];
     int puntos_de_vida;
     int ataque;
+	bool envenenado;
 } enemigo_;
 
 struct registro_cola
@@ -45,7 +47,7 @@ void imprimir_enemigos(cola_enemigos Q);
  * se encuentre el jugador
  * 
  */
-void enemigos_x_zona(personaje_ *p, int elegir_ruta);
+void enemigos_x_zona(personaje_ *p, int elegir_ruta, inventario i);
 
 
 /*No estoy completamente seguro si se puede modularizar aun mas
@@ -68,11 +70,27 @@ void enemigos_cuevas(cola_enemigos Q);
  */
 void enemigos_castillo(cola_enemigos Q);
 
-void imprimir_combate(personaje_ *p, cola_enemigos Q);
+void imprimir_combate(personaje_ *p, cola_enemigos Q, inventario i);
 
 void ataque(personaje_ *p, cola_enemigos Q);
 
-void ver_inventario(void);
-
+/**
+ * @brief Usa un objeto y lo elimina en caso de ser un consumible.
+ * 
+ * Al usar un objeto consumible, se ejecuta su efecto en el personaje o los enemigos
+ * y es eliminado del inventario.
+ *
+ * Un objeto equipable ejecuta su efecto al ser utilizado, y no puede usarse hasta que
+ * se use otro objeto equipable.
+ *
+ * Un objeto tipo arma ejecuta su efecto y entra en un periodo de enfriamiento (cd),
+ * en el cual no puede volver a ser utilizado hasta que se termine este periodo.
+ *
+ * @param i Inventario a usar un objeto.
+ * @param o Objeto a usar.
+ *
+ * @return El inventario en todos los casos.
+ */
+inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemigo);
 
 #endif

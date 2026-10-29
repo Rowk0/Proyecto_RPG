@@ -3,6 +3,8 @@
 
 #include "objetos.h"
 
+#define inventarios , inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo
+
 typedef struct nodo_objeto* puntero_a_nodo_objeto;
 typedef puntero_a_nodo_objeto inventario;
 typedef puntero_a_nodo_objeto posicion;
@@ -21,9 +23,20 @@ struct nodo_objeto
 /**
  * @brief Crea un inventario a una variable de tipo inventario.
  * 
+ * @param i Variable de tipo inventario en donde crearlo.
+ *
  * @return El inventario si se creo correctamente, NULL en caso contrario.
  */
 inventario crear_inventario_vacio(inventario i);
+
+/**
+ * @brief Carga un inventario de un archivo texto de un guardado a una variable de tipo inventario.
+ * 
+ * @param i Variable de tipo inventario en donde cargarlo.
+ *
+ * @return El inventario si se creo correctamente, NULL en caso contrario.
+ */
+inventario cargar_inventario(inventario i, int numero_de_guardado);
 
 /**
  * @brief Inserta el objeto al inventario dado al final de la lista.
@@ -33,26 +46,7 @@ inventario crear_inventario_vacio(inventario i);
  *
  * @return El inventario en todos los casos.
  */
-inventario tomar_objeto(inventario i, objeto_ o);
-
-/**
- * @brief Usa un objeto y lo elimina en caso de ser un consumible.
- * 
- * Al usar un objeto consumible, se ejecuta su efecto en el personaje o los enemigos
- * y es eliminado del inventario.
- *
- * Un objeto equipable ejecuta su efecto al ser utilizado, y no puede usarse hasta que
- * se use otro objeto equipable.
- *
- * Un objeto tipo arma ejecuta su efecto y entra en un periodo de enfriamiento (cd),
- * en el cual no puede volver a ser utilizado hasta que se termine este periodo.
- *
- * @param i Inventario a usar un objeto.
- * @param o Objeto a usar.
- *
- * @return El inventario en todos los casos.
- */
-inventario usar_objeto(inventario i, int id);
+inventario insertar_objeto(inventario i, objeto_ o);
 
 /**
  * @brief Busca un objeto por id en el inventario dado.
@@ -102,6 +96,10 @@ posicion encontrar_objeto_anterior_por_nombre(inventario i, char* nombre);
  */
 bool inventario_vacio(inventario i);
 
+inventario cargar_botin(inventario botin, int numero_de_zona, int numero_de_guardado);
+
+void tomar_objeto_de_botin(inventario i, inventario botin, objeto_ o);
+
 /**
  * @brief Imprime todos los objetos del inventario en orden de primer.
  */
@@ -122,6 +120,6 @@ void eliminar_objeto_por_id(inventario i, int id);
  *
  * @param i Inventario a eliminar.
  */
-inventario eliminar_inventario(inventario i);
+void eliminar_inventario(inventario i);
 
 #endif

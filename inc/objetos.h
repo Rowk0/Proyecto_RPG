@@ -9,7 +9,7 @@
 
 #define BANDANA_NINJA 1
 #define ARO_CARMESI 2
-#define CORONA 3
+#define CORONA_REY 3
 
 /**
  * @brief Estructura de objetos

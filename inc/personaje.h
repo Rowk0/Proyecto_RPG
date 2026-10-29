@@ -1,10 +1,7 @@
 #ifndef PERSONAJE
 #define PERSONAJE
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
+#include <stdbool.h>
 #include "historial.h"
 
 /**
@@ -21,6 +18,9 @@ typedef struct
     int puntos_de_vida;
     int ataque;
     int defensa;
+	int accesorio;
+	int regeneracion;
+	bool espejo_activo;
     historial historial;
 } personaje_;
 

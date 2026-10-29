@@ -1,11 +1,8 @@
 #ifndef GAME_MENU
 #define GAME_MENU
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
 #include "personaje.h"
+#include "inventario.h"
 
 /**
  * @brief Imprime una bienvenida al jugador y se le pide que archivo de guardado desea abrir
@@ -17,12 +14,12 @@ void inicializacion_rpg(int *indice_archivo_guardado);
 /**
  * @brief imprime el menu de inicio
  */
-void imprimir_menu();
+void imprimir_menu(void);
 
 /**
  * @brief Verifica la seleccion
  */
-void selector_menu(personaje_ *p, int *loop_juego);
+void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo);
 
 /**
  * @brief Imprime archivos de guardado
