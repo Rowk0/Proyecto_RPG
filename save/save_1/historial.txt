@@ -1,4 +1,6 @@
-Sigues caminando. No encuentras nada
+Sigues caminando. No encuentras nada (base pila)
 
 Has sido derrotado en combate
+
+Sigues caminando. No encuentras nada (Punta pila)
 
