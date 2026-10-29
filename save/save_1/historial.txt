@@ -1,8 +1,15 @@
-Sigues caminando. No encuentras nada (base pila)
+Has ganado un combate!
 
-Has sido derrotado en combate
+Mataste al enemigo Ogro
 
-Sigues caminando. No encuentras nada (Punta pila)
+Mataste al enemigo Lobo
 
-Sigues caminando. No encuentras nada
+Mataste al enemigo Ogro
 
+Has ganado un combate!
+
+Mataste al enemigo Lobo
+(4) Punta pila
+(3)
+(2)
+(1) Base pila

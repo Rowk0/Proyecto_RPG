@@ -341,6 +341,7 @@ void tomar_objeto_de_botin(inventario i, inventario botin, objeto_ o)
 	while(leer != 1 || (eleccion != 'S' && eleccion != 'n'))
 	{
 		printf("Caracter invalido, intente de nuevo\n-> ");
+		leer = scanf(" %c", &eleccion);
 	}
 	switch(eleccion)
 	{

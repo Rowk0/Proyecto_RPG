@@ -93,10 +93,6 @@ void guardar_historial(historial H, int *indice_archivo_guardado)
 
     FILE *archivo = fopen(ruta_archivo, "w"); 
 
-    /*Se crea pila auxiliar para guardar de manera invertida en historial.txt 
-    y la funcion cargar_historial lea correctamente mientras recorre el archivo*/
-    historial aux = crear_pila();
-
     if (archivo == NULL)
     {
         printf("Error al abrir el archivo");
@@ -105,14 +101,8 @@ void guardar_historial(historial H, int *indice_archivo_guardado)
 
     while (pila_esta_vacia(H) == 0)
     {
-        push(aux, H->siguiente->accion);
+        fprintf(archivo, "%s\n", H->siguiente->accion);
         H = pop(H);
-    }
-
-    while (pila_esta_vacia(aux) == 0)
-    {
-        fprintf(archivo, "%s\n", aux->siguiente->accion);
-        aux = pop(aux);
     }
     
     fclose(archivo);
