@@ -39,6 +39,14 @@ inventario crear_inventario_vacio(inventario i);
 inventario cargar_inventario(inventario i, int numero_de_guardado);
 
 /**
+ * @brief Guarda el inventario de objetos en un archivo .txt tras cerrar sesion
+ * 
+ * @param i Inventario el cual guardar en el archivo .txt
+ * @param numero_de_guardado  Indice de archivo de la carpeta de save en el que guardar
+ */
+void guardar_inventario(inventario i, int numero_de_guardado);
+
+/**
  * @brief Inserta el objeto al inventario dado al final de la lista.
  * 
  * @param i Inventario a insertar el objeto.

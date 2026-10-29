@@ -74,16 +74,11 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 	FILE* archivo_inventario;
 	FILE* archivo_lootpool;
 	int id; // Id a leer de inventario.txt.
-	int numero_lineas; // Variable utilizada para posicionar el cursor detras del objeto a insertar en el inventario del personaje.
-	char caracter = '\0';
-
-	// Revisa si se leyeron correctamente 4 parametros.
-	int leer;
 
 	// Variables para grabar los valores leidos de lootpool.csv, y luego copiar en un objeto individual.
 	int id_objeto, clase_objeto;
-	char* nombre_objeto = NULL;
-	char* descripcion_objeto = NULL;
+	char nombre_objeto[50];
+	char descripcion_objeto[150];
 
 	// Abrir archivo de todos los objetos
 	archivo_lootpool = fopen("lootpool.csv", "r");
@@ -126,37 +121,65 @@ inventario cargar_inventario(inventario i, int numero_de_guardado)
 
 	while(fscanf(archivo_inventario, "%d", &id) == 1)
 	{
-		printf("id: %d\n", id);
-		// Coloca el cursor detras del id del objeto a cargar
-		for(numero_lineas = 1; numero_lineas < id; caracter = fgetc(archivo_lootpool))
-		{
-			if(caracter == '\n')
-			{
-				numero_lineas++;
-			}
-		}
-		// Parsing
-		leer = fscanf(archivo_lootpool, "%d, %d, %49c[^,], %128c[^,]", &id_objeto, &clase_objeto, nombre_objeto, descripcion_objeto);
-		if(leer != 4 && !feof(archivo_lootpool))
-		{
-			printf("Error de cargar_inventario: Formato de archivo incorrecto\n");
-			return i;
-		}
-		if(ferror(archivo_lootpool))
-		{
-			printf("Error de cargar_inventario: Error al leer el archivo\n");
-			return i;
-		}
-		// Crear el objeto en base a los parametros leidos.
-		i = insertar_objeto(i, crear_objeto(id_objeto, clase_objeto, nombre_objeto, descripcion_objeto));
-	}
-	printf("Debug: Inventario impreso:\n");
-	imprimir_objetos(i);
 
-	fclose(archivo_inventario);
-	fclose(archivo_lootpool);
+		//Devuelve el cursor al principio del CSV
+		rewind(archivo_lootpool);
+
+		// Busca linea por linea hasta encontrar el ID
+		int encontrado = 0;
+		while(fscanf(archivo_lootpool, "%d, %d, %49[^,], %127[^\n]", &id_objeto, &clase_objeto, nombre_objeto, descripcion_objeto) == 4)
+        {
+            if(id_objeto == id)
+            {
+                encontrado = 1;
+                break; 
+            }
+        }
+
+		if(!encontrado)
+        {
+            printf("Error de cargar_inventario: No se encontro el objeto con ID %d en el lootpool\n", id);
+            fclose(archivo_inventario);
+            fclose(archivo_lootpool);
+            return i;
+        }
+
+        // Si se encuentra se crea el objeto en base del ID y se introduce al inventario
+        i = insertar_objeto(i, crear_objeto(id_objeto, clase_objeto, nombre_objeto, descripcion_objeto));
+	}
 
 	return i;
+}
+
+void guardar_inventario(inventario i, int numero_de_guardado)
+{
+	if (i == NULL)
+    {
+        printf("Error guardar_inventario: El inventario no existe, es nulo");
+        return;
+    }
+    
+    char ruta_archivo[30];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/inventario.txt", numero_de_guardado);
+
+    FILE *archivo = fopen(ruta_archivo, "w"); 
+
+    if (archivo == NULL)
+    {
+        printf("Error guardar_inventario: No se pudo abrir el archivo");
+        return;
+    }
+
+	posicion p = i->siguiente;
+    while (p != NULL)
+    {
+        // Guardamos por ejemplo el ID del objeto en una línea del archivo
+        fprintf(archivo, "%d\n", p->objeto.id);
+        p = p->siguiente;
+    }
+    
+    fclose(archivo);
 }
 
 static inventario inicializar_botin(inventario botin, int numero_de_zona)
@@ -290,16 +313,14 @@ static inventario corregir_inicializacion_botin(inventario botin, int numero_de_
 
 inventario cargar_botin(inventario botin, int numero_de_zona, int numero_de_guardado)
 {
-	// En main, correr esta funcion en cada lista de botines.
-	if(inventario_vacio(botin) == false)
-	{
-		botin = inicializar_botin(botin, numero_de_zona);
-		botin = corregir_inicializacion_botin(botin, numero_de_guardado);
-	}
+	
+	botin = inicializar_botin(botin, numero_de_zona);
 
+	botin = corregir_inicializacion_botin(botin, numero_de_guardado);
 
 	return botin;
 }
+
 static objeto_ extraer_objeto_al_azar(inventario botin)
 {
 	objeto_ o = {0, 0, NULL, NULL};
@@ -337,7 +358,7 @@ void tomar_objeto_de_botin(inventario i, inventario botin, objeto_ o)
 	analizar_objeto(o);
 	printf("Tomar %s? (S/n)\n", o.nombre);
 	printf("-> ");
-	leer = scanf("%c", &eleccion);
+	leer = scanf(" %c", &eleccion);
 	while(leer != 1 || (eleccion != 'S' && eleccion != 'n'))
 	{
 		printf("Caracter invalido, intente de nuevo\n-> ");

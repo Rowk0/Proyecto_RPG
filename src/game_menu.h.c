@@ -54,7 +54,7 @@ void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario boti
         volver_menu();
         break;
     case 3:
-        printf("opcion ver inventariooo");
+        imprimir_objetos(i);
         volver_menu();
         break;
     case 4:

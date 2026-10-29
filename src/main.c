@@ -35,6 +35,7 @@ int main(void)
     }
 
     guardar_personaje(&personaje, &indice_archivo_guardado);
+    guardar_inventario(i, indice_archivo_guardado);
     guardar_historial(personaje.historial, &indice_archivo_guardado);
 	eliminar_inventario(i);
     return 0;
