@@ -1,7 +1,9 @@
-#include "commons.h"
+#include "game_menu.h"
 #include "personaje.h"
 #include "historial.h"
+#include "exploracion.h"
 #include <time.h>
+
 int main()
 {
     srand(time(NULL));

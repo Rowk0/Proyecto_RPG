@@ -54,4 +54,12 @@ void estado_personaje(personaje_ *p);
  */
 void guardar_personaje(personaje_ *p, int *indice_archivo_guardado);
 
+/**
+ * @brief Comprueba si el archivo de guardado está vacio 
+ * 
+ * @param indice_archivo_guardado Indice del archivo a guardar
+ * @return int Devuele 1 si está vacio o 0 en el caso contrario
+ */
+int archivo_guardado_vacio(int *indice_archivo_guardado);
+
 #endif

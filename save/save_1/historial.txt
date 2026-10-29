@@ -4,3 +4,5 @@ Has sido derrotado en combate
 
 Sigues caminando. No encuentras nada (Punta pila)
 
+Sigues caminando. No encuentras nada
+

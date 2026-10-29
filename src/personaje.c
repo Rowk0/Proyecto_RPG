@@ -83,3 +83,26 @@ void guardar_personaje(personaje_ *p, int *indice_archivo_guardado)
 
     fclose(archivo);
 }
+
+int archivo_guardado_vacio(int *indice_archivo_guardado)
+{
+    char ruta_archivo[30];
+    char lineas[100];
+
+    snprintf(ruta_archivo, sizeof(ruta_archivo), "save/save_%d/save.txt", *indice_archivo_guardado);
+    FILE *archivo = fopen(ruta_archivo, "r"); 
+
+    if (archivo == NULL)
+    {
+        printf("Error al verificar si el arhcivo de guardado esta vacio");
+        return -1;
+    }
+
+    if (fgets(lineas, sizeof(lineas), archivo) == NULL)
+    {
+        printf("El archivo se encuentra vacio\n");
+        return 1;
+    }
+
+    return 0;
+}

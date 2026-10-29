@@ -1,19 +1,11 @@
-#ifndef COMMONS
-#define COMMONS
+#ifndef GAME_MENU
+#define GAME_MENU
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
 #include "personaje.h"
-
-/**
- * @brief Comprueba si el archivo de guardado está vacio 
- * 
- * @param indice_archivo_guardado Indice del archivo a guardar
- * @return int Devuele 1 si está vacio o 0 en el caso contrario
- */
-int archivo_guardado_vacio(int *indice_archivo_guardado);
 
 /**
  * @brief Imprime una bienvenida al jugador y se le pide que archivo de guardado desea abrir
@@ -40,7 +32,6 @@ void selector_menu(personaje_ *p, int *loop_juego);
  */
 void imprimir_guardados(void)/*personaje_ *p*/;
 
-
 /**
  * @brief funcion ingresar 0 para salir
  * 
@@ -56,31 +47,4 @@ void volver_menu(void);
  * 
  */
 int elegir_opcion(void);
-
-/**
- * @brief funcion de animacion para caminar
- * 
- * funcion hecha con ayuda de IA
- */
-void caminando (void);
-
-/**
- * @brief funcion de animacion para caminar
- * 
- * funcion hecha con ayuda de IA
- */
-void cargando (void);
-/**
- * @brief elegir que camino tomar
- * 
- */
-void camino(personaje_ *p);
-
-/**
- * @brief funcion que sirve para cualquier zona que el jugador explore
- * dependiendo de que zona eligio, los objetos y enemigos se restrigen exclusivamente
- * a sus respectivas zonas
- * 
- */
-void explorar_zona(personaje_ *p, int elegir_ruta);
 #endif
