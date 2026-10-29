@@ -9,11 +9,11 @@
       "-c",
       "-I./inc/",
       "-o",
-      "obj/objeto.o",
-      "src/objeto.c"
+      "obj/enemigos.o",
+      "src/enemigos.c"
     ],
     "directory": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG",
-    "file": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG/src/objeto.c",
-    "output": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG/obj/objeto.o"
+    "file": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG/src/enemigos.c",
+    "output": "/home/felibalde/code/estrdat/Proyectos/Proyecto_RPG/obj/enemigos.o"
   }
 ]

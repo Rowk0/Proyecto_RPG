@@ -330,13 +330,15 @@ static objeto_ extraer_objeto_al_azar(inventario botin)
 void tomar_objeto_de_botin(inventario i, inventario botin, objeto_ o)
 {
 	char eleccion;
+	int leer;
 
 	o = extraer_objeto_al_azar(botin);
 	printf("Encontraste un objeto!\n");
 	analizar_objeto(o);
 	printf("Tomar %s? (S/n)\n", o.nombre);
 	printf("-> ");
-	while(scanf("%c", &eleccion) == 0 || (eleccion != 'S' && eleccion != 'n'))
+	leer = scanf("%c", &eleccion);
+	while(leer != 1 || (eleccion != 'S' && eleccion != 'n'))
 	{
 		printf("Caracter invalido, intente de nuevo\n-> ");
 	}

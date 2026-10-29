@@ -323,11 +323,13 @@ inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemi
 {
 	if(inventario_vacio(i) == true)
 	{
-		printf("Error de usar_objeto_por_id: Inventario vacio o nulo\n");
+		return i;
 	}
 
 	int id;
 	int escanear = 0;
+
+	imprimir_objetos(i);
 
 	printf("Ingrese la id del objeto a utilizar: ");
 	escanear = scanf("%d", &id);

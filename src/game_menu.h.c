@@ -29,7 +29,7 @@ void imprimir_guardados(void)
     printf("Save 3\n");
 }
 
-void imprimir_menu()
+void imprimir_menu(void)
 {
     printf("\n====(Fanfared Misadventures)====\n");
     printf("\t==== Menu ====\n");
@@ -40,14 +40,14 @@ void imprimir_menu()
     printf("\t5. Salir :(\n");
 }
 
-void selector_menu(personaje_ *p, int *loop_juego)
+void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo)
 {
     int opcion = elegir_opcion();
     system("clear");
     switch (opcion)
     {
     case 1:
-        camino(p);
+        camino(p, i, botin_bosque, botin_cuevas, botin_castillo);
         break;
     case 2:
         estado_personaje(p);
@@ -68,7 +68,7 @@ void selector_menu(personaje_ *p, int *loop_juego)
     default:
         printf("Eliga una opcion valida!\n");
         sleep(1);
-        selector_menu(p, loop_juego);
+        selector_menu(p, loop_juego, i, botin_bosque, botin_cuevas, botin_castillo);
     }
 }
 
