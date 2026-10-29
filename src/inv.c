@@ -511,7 +511,7 @@ void eliminar_objeto_por_id(inventario i, int id)
 	}
 	
 	posicion p, aux;
-	p = encontrar_objeto_anterior_por_id(i, id); // (habia dado error la funcion de encontrar objeto anterior)
+	p = encontrar_objeto_anterior_por_id(i, id); 
 	if(p == NULL)
 	{
 		printf("Error de eliminar_objeto: No se encontro el objeto a eliminar\n");

@@ -36,7 +36,7 @@ objeto_ crear_objeto(int id, int clase, char* nombre, char* descripcion)
 
 void analizar_objeto(objeto_ o)
 {
-	printf("  - id (BORRAR ESTO AL TERMINAR!!): %d\n", o.id);
+	printf("  - id: %d\n", o.id);
 	printf("  - Nombre: %s\n", o.nombre);
 	printf("  - Descripcion: %s\n", o.descripcion);
 }

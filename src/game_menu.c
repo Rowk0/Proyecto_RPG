@@ -2,6 +2,7 @@
 #include "personaje.h"
 #include "enemigos.h"
 #include "exploracion.h"
+#include "inventario.h"
 #include <unistd.h>
 
 void inicializacion_rpg(int *indice_archivo_guardado)
@@ -40,10 +41,16 @@ void imprimir_menu(void)
     printf("\t5. Salir :(\n");
 }
 
-void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo)
+void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo, historial historial)
 {
     int opcion = elegir_opcion();
-    system("clear");
+
+    if (system("clear") != 0) 
+    {
+        printf("Error selector_menu: No se pudo limpiar pantalla");
+        return;
+    }
+
     switch (opcion)
     {
     case 1:
@@ -55,7 +62,7 @@ void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario boti
         break;
     case 3:
         imprimir_objetos(i);
-        volver_menu();
+        eliminar_objeto_print(i, historial);
         break;
     case 4:
         imprimir_historial(p->historial);
@@ -68,8 +75,30 @@ void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario boti
     default:
         printf("Eliga una opcion valida!\n");
         sleep(1);
-        selector_menu(p, loop_juego, i, botin_bosque, botin_cuevas, botin_castillo);
+        selector_menu(p, loop_juego, i, botin_bosque, botin_cuevas, botin_castillo, historial);
     }
+}
+
+void eliminar_objeto_print(inventario i, historial historial)
+{
+    int opcion = -1, id = -1;
+    char accion[50];
+
+    printf("¿Desea descartar algun objeto?\n");
+    printf("(1) Si\n");
+    printf("(2) No\n");
+    opcion = elegir_opcion();
+
+    if (opcion == 1)
+    {
+        printf("Introduzca el id del objeto a eliminar:\n");
+        id = elegir_opcion();
+        eliminar_objeto_por_id(i, id);
+        snprintf(accion, sizeof(accion), "Eliminaste el objeto de id: %d\n", id);
+        historial = push(historial, accion); 
+    }
+    
+    return;
 }
 
 void volver_menu(void)

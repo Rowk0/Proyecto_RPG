@@ -3,6 +3,7 @@
 
 #include "personaje.h"
 #include "inventario.h"
+#include "historial.h"
 
 /**
  * @brief Imprime una bienvenida al jugador y se le pide que archivo de guardado desea abrir
@@ -19,7 +20,7 @@ void imprimir_menu(void);
 /**
  * @brief Verifica la seleccion
  */
-void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo);
+void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo, historial historial);
 
 /**
  * @brief Imprime archivos de guardado
@@ -44,4 +45,11 @@ void volver_menu(void);
  * 
  */
 int elegir_opcion(void);
+
+/**
+ * @brief Pregunta al usuario si desea descartar algun objeto de su inventario
+ * 
+ * @param I Inventario de objetos
+ */
+void eliminar_objeto_print(inventario i, historial historial);
 #endif

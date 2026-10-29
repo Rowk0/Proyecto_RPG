@@ -2,6 +2,7 @@
 #define INVENTARIO
 
 #include "objetos.h"
+#include "historial.h"
 
 #define inventarios , inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo
 
