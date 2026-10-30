@@ -91,6 +91,6 @@ void ataque(personaje_ *p, cola_enemigos Q);
  *
  * @return El inventario en todos los casos.
  */
-inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemigo);
+inventario usar_objeto_por_id(inventario i, personaje_ *personaje, cola_enemigos Q);
 
 #endif

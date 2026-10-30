@@ -1,5 +1,6 @@
 #include "enemigos.h"
 #include "inventario.h"
+#include "objetos.h"
 #include "personaje.h"
 #include "game_menu.h"
 #include <stdio.h>
@@ -255,7 +256,7 @@ void imprimir_combate(personaje_ *p, cola_enemigos Q, inventario i)
         }
         else if(opcion == 3)
         {
-            i = usar_objeto_por_id(i, *p, *enemigo_actual);
+            i = usar_objeto_por_id(i, p, Q);
         }
         else
         {
@@ -278,13 +279,32 @@ void imprimir_combate(personaje_ *p, cola_enemigos Q, inventario i)
 void ataque(personaje_ *p, cola_enemigos Q)
 {
     enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
-    enemigo_actual->puntos_de_vida -= p->ataque_total;
+	int golpe = p->ataque;
+	int random; // Sostiene un numero aleatorio si es necesario.
+
+	// Ataque del personaje
+
+	if(p->accesorio == CORONA_REY)
+	{
+		random = rand() % 100 + 1;
+		if(random <= 35)
+		{
+			golpe *= 2;
+			printf("Golpe critico!! [Corona del Rey Olvidado]\n");
+		}
+	}
+    enemigo_actual->puntos_de_vida -= golpe;
+	if(enemigo_actual->envenenado == true)
+	{
+		enemigo_actual->puntos_de_vida -= 5;
+		printf("%s recibe 5 de Danho por envenenamiento!\n", enemigo_actual->nombre);
+	}
     if(enemigo_actual->puntos_de_vida < 0)
     {
         //para que no quede vida negativa
         enemigo_actual->puntos_de_vida = 0;
     }
-    printf("Atacas a %s, le haces %d de Danho.\n", enemigo_actual->nombre, p->ataque_total);
+    printf("Atacas a %s, le haces %d de Danho.\n", enemigo_actual->nombre, golpe);
     printf("%s: %d PV\n", enemigo_actual->nombre, enemigo_actual->puntos_de_vida);
     sleep(2);
 
@@ -300,27 +320,79 @@ void ataque(personaje_ *p, cola_enemigos Q)
         return;
     }
 
-    int danho_enemigo = enemigo_actual->ataque - p->defensa;
-    
-    if(danho_enemigo < 0)
-    {
-        danho_enemigo = 0;
-    }
+	// Turno del enemigo
 
-    p->puntos_de_vida -= danho_enemigo;
-    if(p->puntos_de_vida < 0)
-    {
-        p->puntos_de_vida = 0; //para no tener vida negativa
-    }
+	if(p->espejo_activo == true) // Caso de que el personaje active su espejo.
+	{
+		int danho_enemigo = enemigo_actual->ataque;
 
-    printf("%s te ataca, recibes %d de danho\n", enemigo_actual->nombre, danho_enemigo);
-    printf("Tienes %d PV", p->puntos_de_vida);
+		enemigo_actual->puntos_de_vida -= danho_enemigo;
+		printf("Ataque reflejado!!\n");
+		printf("%s recibe %d puntos de Danho.\n", enemigo_actual->nombre, danho_enemigo);
+		p->espejo_activo = false;
+		if(enemigo_actual->puntos_de_vida == 0)
+		{
+			printf("Mataste a %s.  EPICO\n", enemigo_actual->nombre);
+
+			char accion[64]; //variable accion para guardar la frase y poder mostrarla en historial
+			snprintf(accion, sizeof(accion), "Mataste al enemigo %s\n", enemigo_actual->nombre);
+			p->historial = push(p->historial, accion);
+
+			dequeue(Q);
+			return;
+		}
+	}
+	else if(p->accesorio == BANDANA_NINJA)
+	{
+		random = rand() % 100 + 1;
+		if(random <= 35)
+		{
+			printf("%s te ataca...\n", enemigo_actual->nombre);
+			sleep(1);
+			printf("Ataque esquivado! [Bandana ninja]\n");
+			sleep(1);
+			return;
+		}
+	}
+	else
+	{
+		int danho_enemigo = enemigo_actual->ataque - p->defensa;
+		
+		if(danho_enemigo < 0)
+		{
+			danho_enemigo = 0;
+		}
+
+		p->puntos_de_vida -= danho_enemigo;
+		if(p->puntos_de_vida < 0)
+		{
+			p->puntos_de_vida = 0; //para no tener vida negativa
+		}
+
+		printf("%s te ataca, recibes %d de danho\n", enemigo_actual->nombre, danho_enemigo);
+		printf("Tienes %d PV", p->puntos_de_vida);
+	}
+
+	if(p->accesorio == ARO_CARMESI)
+	{
+		p->puntos_de_vida += 3;
+		printf("+3 PV por [Aro carmesi]!\n");
+	}
+	if(p->regeneracion > 0)
+	{
+		p->puntos_de_vida += 5;
+		printf("+5 PV por [Pocima de regeneracion]!\n");
+		p->regeneracion--;
+	}
+
     sleep(2);
     system("clear");
 }
 
-inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemigo)
+inventario usar_objeto_por_id(inventario i, personaje_ *personaje, cola_enemigos Q)
 {
+	enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
+
 	if(inventario_vacio(i) == true)
 	{
 		return i;
@@ -341,26 +413,34 @@ inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemi
 	posicion p;
 	p = encontrar_objeto_por_id(i, id);
 
+	if(p == NULL)
+	{
+		printf("Error: No se encontro el objeto de id %d en el inventario :<\n", id);
+	}
+
 	// Accionar el objeto
 	switch(p->objeto.clase)
 	{
 		case EQUIPABLE:
 		{
-			switch(id) 
+			switch(id) // Espadas
 			{
 				case 1:
 				{
-					personaje.ataque = 8;
+					personaje->ataque = 8;
+					printf("Blandes tu [%s], tu ataque aumenta a 8.", p->objeto.nombre);
 					break;
 				}
-				case 2:
+				case 5:
 				{
-					personaje.ataque = 12;
+					personaje->ataque = 12;
+					printf("Blandes [%s], tu ataque aumenta a 12.", p->objeto.nombre);
 					break;
 				}
-				case 3:
+				case 9:
 				{
-					personaje.ataque = 16;
+					personaje->ataque = 16;
+					printf("Blandes [%s], tu ataque aumenta a 16.", p->objeto.nombre);
 					break;
 				}
 				default:
@@ -375,34 +455,41 @@ inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemi
 		{
 			switch(id) 
 			{
-				case 4:
+				case 2: // Pocima menor
 				{
-					personaje.puntos_de_vida += 15;
+					personaje->puntos_de_vida += 15;
+					printf("Recuperaste 15 PV!\n");
 					break;
 				}
-				case 5:
+				case 6: // Pocima de regeneracion
 				{
-					personaje.regeneracion = 4; 
+					personaje->regeneracion = 4;
+					printf("Recibes 4 turnos de regeneracion!\n");
 					break;
 				}
-				case 6:
+				case 10: // Pocima mayor
 				{
-					personaje.puntos_de_vida += 30;
+					personaje->puntos_de_vida += 30;
+					printf("Recuperaste 30 PV!\n");
 					break;
 				}
-				case 7:
+				case 3: // Bomba
 				{
-					enemigo.puntos_de_vida -= 30;
+					enemigo_actual->puntos_de_vida -= 25;
+					printf("BOOM!\n");
+					printf("%s recibe 25 puntos de Danho.\n", enemigo_actual->nombre);
 					break;
 				}
-				case 8:
+				case 7: // Frasco de veneno
 				{
-					enemigo.envenenado = true;
+					enemigo_actual->envenenado = true;
+					printf("Enemigo envenenado!\n");
 					break;
 				}
-				case 9:
+				case 11: // Espejo
 				{
-					personaje.espejo_activo = true;
+					personaje->espejo_activo = true;
+					printf("Sostienes tu [Espejo magico] ante tu oponente...\n");
 					break;
 				}
 				default:
@@ -418,19 +505,19 @@ inventario usar_objeto_por_id(inventario i, personaje_ personaje, enemigo_ enemi
 		{
 			switch(id)
 			{
-				case 10:
+				case 4:
 				{
-					personaje.accesorio = BANDANA_NINJA;
+					personaje->accesorio = BANDANA_NINJA;
 					break;
 				}
-				case 11:
+				case 8:
 				{
-					personaje.accesorio = ARO_CARMESI;
+					personaje->accesorio = ARO_CARMESI;
 					break;
 				}
 				case 12:
 				{
-					personaje.accesorio = CORONA_REY;
+					personaje->accesorio = CORONA_REY;
 					break;
 				}
 				default:

@@ -11,4 +11,5 @@
  * @param inv Inventario a explorar objetos
  */
 void actualizar_equipo(personaje_ *p, inventario inv);
+
 #endif
