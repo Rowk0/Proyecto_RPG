@@ -48,7 +48,6 @@ void liberar_objeto(objeto_ o)
 }
 
 /* Recalcula bonos a partir del inventario. Llamar tras insertar/eliminar objetos. */
-/////////////////////chatgepeteadaaaa
 void actualizar_equipo(personaje_ *p, inventario inv)
 {
     int mejor_arma = 0;
