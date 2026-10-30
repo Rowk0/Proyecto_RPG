@@ -22,6 +22,7 @@ typedef struct
 	int regeneracion;
 	bool espejo_activo;
     historial historial;
+    int ataque_total;
 } personaje_;
 
 /**

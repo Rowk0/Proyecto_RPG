@@ -278,13 +278,13 @@ void imprimir_combate(personaje_ *p, cola_enemigos Q, inventario i)
 void ataque(personaje_ *p, cola_enemigos Q)
 {
     enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
-    enemigo_actual->puntos_de_vida -= p->ataque;
+    enemigo_actual->puntos_de_vida -= p->ataque_total;
     if(enemigo_actual->puntos_de_vida < 0)
     {
         //para que no quede vida negativa
         enemigo_actual->puntos_de_vida = 0;
     }
-    printf("Atacas a %s, le haces %d de Danho.\n", enemigo_actual->nombre, p->ataque);
+    printf("Atacas a %s, le haces %d de Danho.\n", enemigo_actual->nombre, p->ataque_total);
     printf("%s: %d PV\n", enemigo_actual->nombre, enemigo_actual->puntos_de_vida);
     sleep(2);
 

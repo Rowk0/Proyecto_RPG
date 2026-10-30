@@ -7,7 +7,7 @@ int main(void)
 {
     srand(time(NULL));
    
-    personaje_ personaje = {"\0", 20, 2, 1, 0, 0, 0, crear_pila()};
+    personaje_ personaje = {"\0", 20, 2, 1, 0, 0, 0, crear_pila(), 2};
 	inventario i = NULL;
 	inventario botin_bosque = NULL;
 	inventario botin_cuevas = NULL;

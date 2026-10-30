@@ -1,6 +1,5 @@
 #include "acciones.h"
 
-/* Recalcula bonos a partir del inventario. Llamar tras insertar/eliminar objetos. */
 void actualizar_equipo(personaje_ *p, inventario inv)
 {
     int mejor_arma = 0;
@@ -29,6 +28,6 @@ void actualizar_equipo(personaje_ *p, inventario inv)
         }
     }
 
-    //p->ataque = p->ataque_base + mejor_arma;
+    p->ataque_total = p->ataque + mejor_arma;
     p->accesorio = accesorio;
 }

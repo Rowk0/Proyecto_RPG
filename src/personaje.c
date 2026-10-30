@@ -63,6 +63,10 @@ void estado_personaje(personaje_ *p)
     printf("[%-7s]: %d\n", "Ataque", p->ataque);
     printf("[%-7s]: %d\n", "Vida", p->puntos_de_vida);
     printf("[%-7s]: %d\n", "Defensa", p->defensa);
+    printf("[%-7s]: %d\n", "Accesorio", p->accesorio);
+    printf("[%-7s]: %d\n", "Regeneracion", p->regeneracion);
+    printf("[%-7s]: %d\n", "Espejo activo", p->espejo_activo);
+    printf("[%-7s]: %d\n", "Ataque total", p->ataque_total);
 }
 
 void guardar_personaje(personaje_ *p, int *indice_archivo_guardado)

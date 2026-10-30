@@ -52,4 +52,13 @@ int elegir_opcion(void);
  * @param I Inventario de objetos
  */
 void eliminar_objeto_print(inventario i, historial historial);
+
+/**
+ * @brief Imprime un menu interactivo para explorar opciones del inventario
+ * 
+ * @param p Personaje que posee el inventario
+ * @param i Inventario a explorar
+ * @param H Historial para acciones de inventario
+ */
+void menu_inventario(personaje_ *p, inventario i, historial H);
 #endif

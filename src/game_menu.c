@@ -4,6 +4,7 @@
 #include "exploracion.h"
 #include "inventario.h"
 #include "historial.h"
+#include "acciones.h"
 #include <unistd.h>
 
 void inicializacion_rpg(int *indice_archivo_guardado)
@@ -63,7 +64,7 @@ void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario boti
         break;
     case 3:
         imprimir_objetos(i);
-        eliminar_objeto_print(i, historial);
+        menu_inventario(p, i, historial);
         break;
     case 4:
         imprimir_historial(p->historial);
@@ -129,4 +130,25 @@ int elegir_opcion(void)
     printf("\nElige una opcion: ");
     while (scanf("%d", &opcion) != 1);
     return opcion;
+}
+
+void menu_inventario(personaje_ *p, inventario i, historial H)
+{
+    int opcion;
+
+    printf("=====MENU INVENTARIO=====\n");
+    printf("(1) Actualizar equipamiento\n");
+    printf("(2) Descartar objeto del inventario\n");
+    opcion = elegir_opcion();
+
+    if (opcion == 1)
+    {
+        actualizar_equipo(p, i);
+    }
+    else if (opcion == 2)
+    {
+        eliminar_objeto_print(i, H);
+    }
+    
+    return;
 }
