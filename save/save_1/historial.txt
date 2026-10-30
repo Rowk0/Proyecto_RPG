@@ -1,19 +1,10 @@
-Eliminaste el objeto de id: 5
-
+Eliminaste el objeto de id: 0
 Sigues caminando. No encuentras nada
-
+Mataste al enemigo Lobo
+Has ganado un combate!
+Mataste al enemigo Ogro
+Mataste al enemigo Lobo
+Mataste al enemigo Ogro
+Has ganado un combate!
 Sigues caminando. No encuentras nada
-
-Has ganado un combate!
-
-Mataste al enemigo Ogro
-
-Mataste al enemigo Lobo
-
-Mataste al enemigo Ogro
-
-Has ganado un combate!
-
-Mataste al enemigo Lobo
-
 Sigues caminando. No encuentras nada

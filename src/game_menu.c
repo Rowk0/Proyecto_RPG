@@ -3,6 +3,7 @@
 #include "enemigos.h"
 #include "exploracion.h"
 #include "inventario.h"
+#include "historial.h"
 #include <unistd.h>
 
 void inicializacion_rpg(int *indice_archivo_guardado)
@@ -41,7 +42,7 @@ void imprimir_menu(void)
     printf("\t5. Salir :(\n");
 }
 
-void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo, historial historial)
+void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo, historial historial, int indice_archivo_guardado)
 {
     int opcion = elegir_opcion();
 
@@ -75,7 +76,7 @@ void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario boti
     default:
         printf("Eliga una opcion valida!\n");
         sleep(1);
-        selector_menu(p, loop_juego, i, botin_bosque, botin_cuevas, botin_castillo, historial);
+        selector_menu(p, loop_juego, i, botin_bosque, botin_cuevas, botin_castillo, historial, indice_archivo_guardado);
     }
 }
 
@@ -87,6 +88,9 @@ void eliminar_objeto_print(inventario i, historial historial)
     printf("¿Desea descartar algun objeto?\n");
     printf("(1) Si\n");
     printf("(2) No\n");
+    printf("(3) Deseo recuperar mi objeto descartado\n");
+    printf("Warning: Recuperar el objeto descartado solo si no haz hechos mas acciones\n");
+    printf("Por ejemplo: Explorar la zona luego de descartar no seras capaz de recuperar tu objeto");
     opcion = elegir_opcion();
 
     if (opcion == 1)
@@ -96,6 +100,14 @@ void eliminar_objeto_print(inventario i, historial historial)
         eliminar_objeto_por_id(i, id);
         snprintf(accion, sizeof(accion), "Eliminaste el objeto de id: %d\n", id);
         historial = push(historial, accion); 
+    }
+    else if (opcion == 2)
+    {
+        return;
+    }
+    else if (opcion == 3)
+    {
+        i = deshacer_descarte_objeto(historial, i);
     }
     
     return;

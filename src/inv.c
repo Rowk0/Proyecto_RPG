@@ -8,6 +8,7 @@
 #include <string.h> 
 #include "inventario.h"
 #include "objetos.h"
+#include "historial.h"
 
 inventario crear_inventario_vacio(inventario i)
 {
@@ -534,4 +535,55 @@ void eliminar_inventario(inventario i)
 		free(i);
 		i = aux;
 	}
+}
+
+inventario deshacer_descarte_objeto(historial H, inventario i)
+{
+    int id;
+    int id_objeto, clase_objeto;
+    char nombre_objeto[50];
+    char descripcion_objeto[150];
+
+    if (pila_esta_vacia(H))
+    {
+        printf("No hay acciones recientes para deshacer en el historial.\n");
+        return i;
+    }
+
+    if (sscanf(H->siguiente->accion, "Eliminaste el objeto de id: %d", &id) != 1)
+    {
+        printf("La ultima accion no fue un descarte de objeto.\n");
+        return i;
+    }
+
+    FILE *archivo_lootpool = fopen("lootpool.csv", "r");
+    if (archivo_lootpool == NULL)
+    {
+        printf("Error deshacer_descarte_objeto: No se pudo abrir archivo lootpool\n");
+        return i;
+    }
+
+    int encontrado = 0;
+    while (fscanf(archivo_lootpool, " %d, %d, %49[^,], %149[^\n]", &id_objeto, &clase_objeto, nombre_objeto, descripcion_objeto) == 4)
+    {
+        if (id_objeto == id)
+        {
+            encontrado = 1;
+            break;
+        }
+    }
+
+    fclose(archivo_lootpool);
+
+    if (!encontrado)
+    {
+        printf("Error deshacer_descarte_objeto: No se encontro el objeto con ID %d\n", id);
+        return i;
+    }
+
+    i = insertar_objeto(i, crear_objeto(id_objeto, clase_objeto, nombre_objeto, descripcion_objeto));
+    H = pop(H);
+
+    printf("Objeto recuperado!\n");
+    return i;
 }

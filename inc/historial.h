@@ -74,4 +74,20 @@ void guardar_historial(historial H, int *indice_archivo_guardado);
  */
 void cargar_historial(historial H, int *indice_archivo_guardado);
 
+/**
+ * @brief Funcion recursiva que imprime de manera estetica una pila al revez (tope abajo, la base arriba)
+ * 
+ * @param H Historial a imprimir
+ */
+void imprimir_desde_el_fondo(historial H);
+
+/**
+ * @brief Funcion recursiva que explora la pila del historial hasta el ultimo elemento y empezar
+ * a escribir cuando llege al caso limite
+ * 
+ * @param archivo Archivo donde guardar el historial
+ * @param H Historial a guardar
+ */
+void escribir_desde_el_fondo(FILE *archivo, historial H);
+
 #endif

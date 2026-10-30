@@ -20,7 +20,7 @@ void imprimir_menu(void);
 /**
  * @brief Verifica la seleccion
  */
-void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo, historial historial);
+void selector_menu(personaje_ *p, int *loop_juego, inventario i, inventario botin_bosque, inventario botin_cuevas, inventario botin_castillo, historial historial, int indice_archivo_guardado);
 
 /**
  * @brief Imprime archivos de guardado

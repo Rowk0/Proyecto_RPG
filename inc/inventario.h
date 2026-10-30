@@ -131,4 +131,13 @@ void eliminar_objeto_por_id(inventario i, int id);
  */
 void eliminar_inventario(inventario i);
 
+/**
+ * @brief Si el tope de la pila contiene un descarte de objeto, el jugador es capaz de recuperarla
+ * 
+ * @param H Historial a revisar
+ * @param i Inventario donde insertar el objeto
+ * @return inventario Devuelve el inventario actualizado
+ */
+inventario deshacer_descarte_objeto(historial H, inventario i);
+
 #endif

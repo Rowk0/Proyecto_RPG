@@ -1,4 +1,11 @@
 #include "historial.h"
+#include "inventario.h"
+#include "objetos.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
 
 historial crear_pila()
 {
@@ -56,15 +63,8 @@ historial pop(historial H)
 
 void imprimir_historial(historial H)
 {
-    historial actual = H->siguiente;
-
     printf("=====HISTORIAL DE ACCIONES=====\n");
-
-    while (actual != NULL)
-    {
-        printf("%s\n", actual->accion);
-        actual = actual->siguiente;
-    }
+    imprimir_desde_el_fondo(H->siguiente);
 }
 
 int pila_esta_vacia(historial H)
@@ -99,11 +99,7 @@ void guardar_historial(historial H, int *indice_archivo_guardado)
         return;
     }
 
-    while (pila_esta_vacia(H) == 0)
-    {
-        fprintf(archivo, "%s\n", H->siguiente->accion);
-        H = pop(H);
-    }
+    escribir_desde_el_fondo(archivo, H->siguiente);
     
     fclose(archivo);
 }
@@ -131,4 +127,26 @@ void cargar_historial(historial H, int *indice_archivo_guardado)
     }
 
     fclose(archivo);
+}
+
+void imprimir_desde_el_fondo(historial H)
+{
+    if (H == NULL)
+    {
+        return;
+    }
+    
+    imprimir_desde_el_fondo(H->siguiente);
+    printf("%s\n", H->accion);
+}
+
+void escribir_desde_el_fondo(FILE *archivo, historial H)
+{
+    if (H == NULL)
+    {
+        return;
+    }
+
+    escribir_desde_el_fondo(archivo, H->siguiente);
+    fprintf(archivo, "%s\n", H->accion);
 }

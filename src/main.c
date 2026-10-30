@@ -31,7 +31,7 @@ int main(void)
     while(loop_juego)
     {
         imprimir_menu();
-        selector_menu(&personaje, &loop_juego, i, botin_bosque, botin_cuevas, botin_castillo, personaje.historial);
+        selector_menu(&personaje, &loop_juego, i, botin_bosque, botin_cuevas, botin_castillo, personaje.historial, indice_archivo_guardado);
     }
 
     guardar_personaje(&personaje, &indice_archivo_guardado);
