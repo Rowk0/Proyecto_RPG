@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 #include "personaje.h"
-#include "inventario.h"
 
 #define EQUIPABLE 1
 #define CONSUMIBLE 2
@@ -50,7 +49,5 @@ void analizar_objeto(objeto_ o);
  * @param o Instancia de objeto.
 */
 void liberar_objeto(objeto_ o);
-
-void actualizar_equipo(personaje_ *p, inventario inv);
 
 #endif
