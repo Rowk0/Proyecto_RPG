@@ -1,6 +1,5 @@
 #include "game_menu.h"
 #include "personaje.h"
-#include "enemigos.h"
 #include "exploracion.h"
 #include "inventario.h"
 #include "historial.h"

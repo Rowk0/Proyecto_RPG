@@ -1,13 +1,11 @@
 #include "historial.h"
-#include "inventario.h"
-#include "objetos.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
 
-historial crear_pila()
+historial crear_pila(void)
 {
     historial H;
 

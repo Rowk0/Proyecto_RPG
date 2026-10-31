@@ -140,6 +140,7 @@ void enemigos_bosque(cola_enemigos Q)
     {
         enemigo_ nuevo;
         nuevo.id = i;
+		nuevo.envenenado = false;
 
         int tipo_enemigo = rand() % 3;
         if(tipo_enemigo == 0)
@@ -172,6 +173,7 @@ void enemigos_cuevas(cola_enemigos Q)
     {
         enemigo_ nuevo;
         nuevo.id = i;
+		nuevo.envenenado = false; 
 
         int tipo_enemigo = rand() % 3;
         if(tipo_enemigo == 0)
@@ -204,6 +206,7 @@ void enemigos_castillo(cola_enemigos Q)
     {
         enemigo_ nuevo;
         nuevo.id = i;
+		nuevo.envenenado = false;
 
         int tipo_enemigo = rand() % 3;
         if(tipo_enemigo == 0)
@@ -237,7 +240,7 @@ void imprimir_combate(personaje_ *p, cola_enemigos Q, inventario i)
     while(!cola_vacia(Q) && p->puntos_de_vida > 0)
     {
         enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
-        printf("\n%s: %d PV | Ataque %d | Defensa %d\n", p->nombre, p->puntos_de_vida, p->ataque, p->defensa);
+        printf("\n%s: %d PV | Ataque %d | Defensa %d\n", p->nombre, p->puntos_de_vida, p->ataque_total, p->defensa);
         printf("Enemigo actual: %s (%d PV)\n", enemigo_actual->nombre, enemigo_actual->puntos_de_vida);
         printf("Enemigos en espera: %d\n\n", Q->tamanho - 1);
         printf("1. Atacar\n");
@@ -279,7 +282,7 @@ void imprimir_combate(personaje_ *p, cola_enemigos Q, inventario i)
 void ataque(personaje_ *p, cola_enemigos Q)
 {
     enemigo_ *enemigo_actual = &Q->arreglo[Q->front];
-	int golpe = p->ataque;
+	int golpe = p->ataque_total;
 	int random; // Sostiene un numero aleatorio si es necesario.
 
 	// Ataque del personaje
@@ -291,6 +294,7 @@ void ataque(personaje_ *p, cola_enemigos Q)
 		{
 			golpe *= 2;
 			printf("Golpe critico!! [Corona del Rey Olvidado]\n");
+			sleep(1);
 		}
 	}
     enemigo_actual->puntos_de_vida -= golpe;
@@ -322,12 +326,25 @@ void ataque(personaje_ *p, cola_enemigos Q)
 
 	// Turno del enemigo
 
+	if(enemigo_actual->puntos_de_vida <= 0)
+	{
+		printf("Mataste a %s.  EPICO\n", enemigo_actual->nombre);
+
+		char accion[64]; //variable accion para guardar la frase y poder mostrarla en historial
+		snprintf(accion, sizeof(accion), "Mataste al enemigo %s\n", enemigo_actual->nombre);
+		p->historial = push(p->historial, accion);
+
+		dequeue(Q);
+		return;
+	}
+
 	if(p->espejo_activo == true) // Caso de que el personaje active su espejo.
 	{
 		int danho_enemigo = enemigo_actual->ataque;
 
 		enemigo_actual->puntos_de_vida -= danho_enemigo;
 		printf("Ataque reflejado!!\n");
+		sleep(1);
 		printf("%s recibe %d puntos de Danho.\n", enemigo_actual->nombre, danho_enemigo);
 		p->espejo_activo = false;
 		if(enemigo_actual->puntos_de_vida == 0)
@@ -370,21 +387,24 @@ void ataque(personaje_ *p, cola_enemigos Q)
 		}
 
 		printf("%s te ataca, recibes %d de danho\n", enemigo_actual->nombre, danho_enemigo);
-		printf("Tienes %d PV", p->puntos_de_vida);
+		printf("Tienes %d PV\n", p->puntos_de_vida);
+		sleep(1);
 	}
 
 	if(p->accesorio == ARO_CARMESI)
 	{
 		p->puntos_de_vida += 3;
 		printf("+3 PV por [Aro carmesi]!\n");
+		sleep(1);
 	}
 	if(p->regeneracion > 0)
 	{
 		p->puntos_de_vida += 5;
 		printf("+5 PV por [Pocima de regeneracion]!\n");
+		sleep(1);
 		p->regeneracion--;
+		printf("Turnos de regeneracion restantes: %d\n\n", p->regeneracion);
 	}
-
     sleep(2);
     system("clear");
 }
@@ -416,6 +436,7 @@ inventario usar_objeto_por_id(inventario i, personaje_ *personaje, cola_enemigos
 	if(p == NULL)
 	{
 		printf("Error: No se encontro el objeto de id %d en el inventario :<\n", id);
+		return i;
 	}
 
 	// Accionar el objeto
@@ -427,20 +448,20 @@ inventario usar_objeto_por_id(inventario i, personaje_ *personaje, cola_enemigos
 			{
 				case 1:
 				{
-					personaje->ataque = 8;
-					printf("Blandes tu [%s], tu ataque aumenta a 8.", p->objeto.nombre);
+					personaje->ataque_total = personaje->ataque + 8;
+					printf("Blandes tu [%s], tu ataque aumenta en 8.\n\n", p->objeto.nombre);
 					break;
 				}
 				case 5:
 				{
-					personaje->ataque = 12;
-					printf("Blandes [%s], tu ataque aumenta a 12.", p->objeto.nombre);
+					personaje->ataque_total = personaje->ataque + 12;
+					printf("Blandes tu [%s], tu ataque aumenta en 12.\n\n", p->objeto.nombre);
 					break;
 				}
 				case 9:
 				{
-					personaje->ataque = 16;
-					printf("Blandes [%s], tu ataque aumenta a 16.", p->objeto.nombre);
+					personaje->ataque_total = personaje->ataque + 16;
+					printf("Blandes tu [%s], tu ataque aumenta en 16.\n\n", p->objeto.nombre);
 					break;
 				}
 				default:
@@ -458,38 +479,44 @@ inventario usar_objeto_por_id(inventario i, personaje_ *personaje, cola_enemigos
 				case 2: // Pocima menor
 				{
 					personaje->puntos_de_vida += 15;
-					printf("Recuperaste 15 PV!\n");
+					printf("Recuperaste 15 PV!\n\n");
+					sleep(1);
 					break;
 				}
 				case 6: // Pocima de regeneracion
 				{
 					personaje->regeneracion = 4;
-					printf("Recibes 4 turnos de regeneracion!\n");
+					printf("Recibes 4 turnos de regeneracion!\n\n");
+					sleep(1);
 					break;
 				}
 				case 10: // Pocima mayor
 				{
 					personaje->puntos_de_vida += 30;
-					printf("Recuperaste 30 PV!\n");
+					printf("Recuperaste 30 PV!\n\n");
+					sleep(1);
 					break;
 				}
 				case 3: // Bomba
 				{
 					enemigo_actual->puntos_de_vida -= 25;
 					printf("BOOM!\n");
-					printf("%s recibe 25 puntos de Danho.\n", enemigo_actual->nombre);
+					printf("%s recibe 25 puntos de Danho.\n\n", enemigo_actual->nombre);
+					sleep(1);
 					break;
 				}
 				case 7: // Frasco de veneno
 				{
 					enemigo_actual->envenenado = true;
-					printf("Enemigo envenenado!\n");
+					printf("Enemigo envenenado!\n\n");
+					sleep(1);
 					break;
 				}
 				case 11: // Espejo
 				{
 					personaje->espejo_activo = true;
-					printf("Sostienes tu [Espejo magico] ante tu oponente...\n");
+					printf("Sostienes tu [Espejo magico] ante tu oponente...\n\n");
+					sleep(1);
 					break;
 				}
 				default:
@@ -508,16 +535,22 @@ inventario usar_objeto_por_id(inventario i, personaje_ *personaje, cola_enemigos
 				case 4:
 				{
 					personaje->accesorio = BANDANA_NINJA;
+					printf("Equipas la [%s].\n\n", p->objeto.nombre);
+					sleep(1);
 					break;
 				}
 				case 8:
 				{
 					personaje->accesorio = ARO_CARMESI;
+					printf("Te colocas el [%s].\n\n", p->objeto.nombre);
+					sleep(1);
 					break;
 				}
 				case 12:
 				{
 					personaje->accesorio = CORONA_REY;
+					printf("Te pones la [%s].\n\n", p->objeto.nombre);
+					sleep(1);
 					break;
 				}
 				default:

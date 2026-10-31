@@ -2,7 +2,6 @@
 #define OBJETOS
 
 #include <stdbool.h>
-#include "personaje.h"
 
 #define EQUIPABLE 1
 #define CONSUMIBLE 2

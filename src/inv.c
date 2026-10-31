@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
+#include <unistd.h>
 #include "inventario.h"
 #include "objetos.h"
 #include "historial.h"
@@ -355,6 +356,12 @@ void tomar_objeto_de_botin(inventario i, inventario botin, objeto_ o)
 	int leer;
 
 	o = extraer_objeto_al_azar(botin);
+	if(o.nombre == NULL)
+	{
+		printf("Se siente como si ya hayas explorado la zona al derecho y al reves, cientos de veces...");
+		sleep(2);
+		return;
+	}
 	printf("Encontraste un objeto!\n");
 	analizar_objeto(o);
 	printf("Tomar %s? (S/n)\n", o.nombre);
@@ -520,7 +527,7 @@ void eliminar_objeto_por_id(inventario i, int id)
 	}
 
 	aux = p->siguiente;
-	printf("Eliminando [%s]...\n", aux->objeto.nombre);
+	// printf("Eliminando [%s]...\n", aux->objeto.nombre);
 	p->siguiente = aux->siguiente;
 	free(aux);
 }

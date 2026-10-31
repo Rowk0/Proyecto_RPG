@@ -25,7 +25,7 @@ struct nodo
  * @param H Historial a crear
  * @return historial Devuelve la pila actualizada
  */
-historial crear_pila();
+historial crear_pila(void);
 
 /**
  * @brief Pone un elemento en la pila
